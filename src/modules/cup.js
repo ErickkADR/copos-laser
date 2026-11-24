@@ -8,7 +8,8 @@ export function createCup(el, { src, textureWidth, reducedMotion }) {
   const state = { yaw: 0, pitch: 0, roll: 0, spin: 0 };
   const blurNode = document.querySelector('[data-spin-blur]');
   const engraver = createEngraver(textureWidth);
-  let body = null, handle = null;
+  let body = null;
+  let tinted = []; // alça e tampa levam a cor da pintura (copo de uma cor só, como o real)
   let sets = null;
   let active = 0;
   let lastOrientation = '';
@@ -20,7 +21,7 @@ export function createCup(el, { src, textureWidth, reducedMotion }) {
   loaded.then(() => {
     const mats = el.model.materials;
     body = mats.find((m) => m.name === 'Body');
-    handle = mats.find((m) => m.name === 'Handle');
+    tinted = mats.filter((m) => m.name === 'Handle' || m.name === 'Lid');
     // os mapas vêm do canvas: os fatores do glTF multiplicam o mapa (metal 1 x B, rugosidade 1 x G)
     body.pbrMetallicRoughness.setMetallicFactor(1);
     body.pbrMetallicRoughness.setRoughnessFactor(1);
@@ -34,6 +35,7 @@ export function createCup(el, { src, textureWidth, reducedMotion }) {
     return { tex, base: cv(tex.base, engraver.W, engraver.H), mr: cv(tex.mr, engraver.W, engraver.H), normal: cv(tex.normal, engraver.hw, engraver.hh) };
   }
 
+  const paintParts = (hex) => { for (const m of tinted) m.pbrMetallicRoughness.setBaseColorFactor(hex); };
   const refresh = (set) => { set.tex.base.source.update(); set.tex.mr.source.update(); set.tex.normal.source.update(); };
 
   function bind(set) {
@@ -62,7 +64,7 @@ export function createCup(el, { src, textureWidth, reducedMotion }) {
   function swap(prepared) {
     bind(prepared.set);
     active = 1 - active;
-    handle?.pbrMetallicRoughness.setBaseColorFactor(prepared.paint);
+    paintParts(prepared.paint);
   }
 
   // Edição ao vivo (estúdio): recompõe na prancha que já está no copo, sem giro.
@@ -72,7 +74,7 @@ export function createCup(el, { src, textureWidth, reducedMotion }) {
     const set = sets[active];
     engraver.compose(spec, set);
     refresh(set);
-    handle?.pbrMetallicRoughness.setBaseColorFactor(spec.paint);
+    paintParts(spec.paint);
   }
 
   // primeira pintura (sem giro): compõe na prancha ativa e liga os slots
@@ -82,7 +84,7 @@ export function createCup(el, { src, textureWidth, reducedMotion }) {
     engraver.compose(spec, sets[active]);
     refresh(sets[active]);
     bind(sets[active]);
-    handle?.pbrMetallicRoughness.setBaseColorFactor(spec.paint);
+    paintParts(spec.paint);
   }
 
   function tick(dt, now) {

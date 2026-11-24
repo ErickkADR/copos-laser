@@ -1,8 +1,8 @@
-// Estúdio "Sua gravação": arte (pronta ou enviada, com limiar e inverter), nome, cor da pintura e download do arquivo do laser.
+// Estúdio "Sua arte": só a arte (pronta ou enviada, com limiar e inverter) e o download do arquivo do laser.
 // Enquanto o tema atual é o personalizado, cada mudança recompõe a gravação e aplica no copo na hora (sem giro).
 // "Girar o copo" roda a coreografia. O arquivo nunca sai do navegador.
 import { ARTS, CUSTOM_BASE } from '../config/arts.js';
-import { PAINTS, DEFAULT_PAINT, EXPORT_ZONE, LASER_PX_PER_MM, LASER_DPI } from '../config/engrave.js';
+import { DEFAULT_PAINT, EXPORT_ZONE, LASER_PX_PER_MM, LASER_DPI } from '../config/engrave.js';
 import { uploadArt, readUpload, renderLaser } from './engrave.js';
 import { withDpi } from './png-dpi.js';
 
@@ -11,28 +11,25 @@ const MAX_UPLOAD = 12 * 1024 * 1024;
 export function initStudio({ switcher, cup, onSelectCustom }) {
   const panel = document.querySelector('[data-studio]');
   const form = panel.querySelector('[data-studio-form]');
-  const textInput = form.querySelector('[data-field-text]');
   const fileInput = form.querySelector('[data-field-file]');
   const tools = form.querySelector('[data-upload-tools]');
   const hint = form.querySelector('[data-upload-hint]');
   const out = form.querySelector('[data-threshold-out]');
   const chipsBox = form.querySelector('[data-art-chips]');
-  const swatchBox = form.querySelector('[data-swatches]');
   const dlBtn = form.querySelector('[data-download-laser]');
   const dlHint = form.querySelector('[data-download-hint]');
   const HINT_DEFAULT = 'SVG, PNG, JPG ou WebP. Fica no seu navegador, nada é enviado.';
-  const state = { art: ARTS[0].id, text: 'Seu nome', paint: DEFAULT_PAINT, up: null, upArt: null, threshold: 0.5, invert: false };
+  const state = { art: ARTS[0].id, up: null, upArt: null, threshold: 0.5, invert: false };
   let opener = null;
   let live = 0;
 
   chipsBox.innerHTML = ARTS.map((a, i) => `<label class="chip"><input type="radio" name="art" value="${a.id}" ${i === 0 ? 'checked' : ''}/><span>${a.name}</span></label>`).join('');
-  swatchBox.innerHTML = PAINTS.map((p, i) => `<label class="swatch" style="--c:${p.hex}" title="${p.name}"><input type="radio" name="paint" value="${p.hex}" ${i === 0 ? 'checked' : ''}/><span class="sr-only">${p.name}</span></label>`).join('');
 
   const isCustom = () => switcher.current?.id === 'custom';
 
   function theme() {
     const ready = ARTS.find((a) => a.id === state.art);
-    return { ...CUSTOM_BASE, art: state.art === 'upload' ? state.upArt : ready.art, text: state.text, paint: state.paint, custom: true };
+    return { ...CUSTOM_BASE, art: state.art === 'upload' ? state.upArt : ready.art, text: '', paint: DEFAULT_PAINT, custom: true };
   }
 
   function refresh() {
@@ -45,8 +42,6 @@ export function initStudio({ switcher, cup, onSelectCustom }) {
 
   form.addEventListener('input', (e) => {
     const t = e.target;
-    if (t.name === 'text') state.text = t.value;
-    if (t.name === 'paint') state.paint = t.value;
     if (t.name === 'art') { state.art = t.value; tools.hidden = true; }
     if (t.name === 'threshold') { state.threshold = t.value / 100; out.textContent = t.value; rebuildUpload(); }
     if (t.name === 'invert') { state.invert = t.checked; rebuildUpload(); }
@@ -120,7 +115,7 @@ export function initStudio({ switcher, cup, onSelectCustom }) {
       onSelectCustom?.();
     }
     document.getElementById('topo').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setTimeout(() => textInput.focus({ preventScroll: true }), 50);
+    setTimeout(() => form.querySelector('input[name="art"]:checked, [data-field-file]')?.focus({ preventScroll: true }), 50);
   }
 
   function close() {

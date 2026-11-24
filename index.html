@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Gravura · copos térmicos gravados a laser em 3D</title>
     <meta name="description" content="Copo térmico preto com gravação a fibra laser: escolha uma arte pronta ou envie a sua, escreva um nome, escolha a cor, veja em 3D e baixe o arquivo pronto para a máquina." />
-    <meta name="theme-color" content="#e3a857" />
+    <meta name="theme-color" content="#0a0a0b" />
     <link rel="canonical" href="https://copos-laser.vercel.app/" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Gravura · copos térmicos gravados a laser" />
@@ -53,17 +53,14 @@
 
     <main id="conteudo">
       <section class="hero" id="topo" aria-labelledby="hero-title" data-hero>
-        <div class="hero-bg" aria-hidden="true"><div class="hero-reveal" data-reveal></div></div>
-        <canvas class="sparks" aria-hidden="true" data-sparks></canvas>
-        <p class="hero-word" aria-hidden="true" data-hero-word>BOIADEIRA</p>
-        <div class="floats" aria-hidden="true" data-floats></div>
+        <div class="hero-bg" aria-hidden="true"></div>
 
         <div class="cup-stage">
           <model-viewer
             class="cup"
             data-cup
             alt="Copo térmico preto em 3D com a arte escolhida gravada a laser, mostrando o inox por baixo da tinta"
-            camera-orbit="0deg 86deg 0.92m"
+            camera-orbit="0deg 84deg 1.1m"
             field-of-view="26deg"
             environment-image="neutral"
             tone-mapping="neutral"
@@ -81,7 +78,7 @@
         <div class="hero-copy">
           <p class="eyebrow">Copos térmicos gravados a fibra laser</p>
           <h1 id="hero-title">A tinta sai, <br />o inox aparece.</h1>
-          <p class="hero-lede">Preto fosco por fora, aço escovado por baixo. Escolha uma arte ou envie a sua, escreva o nome e veja a gravação no copo 3D.</p>
+          <p class="hero-lede">Preto fosco por fora, aço escovado por baixo. Escolha a arte e veja a gravação no copo 3D.</p>
           <div class="hero-actions">
             <button class="btn btn--solid" type="button" data-open-studio>Criar o meu</button>
             <a class="btn btn--ghost" href="#artes">Ver artes</a>
@@ -90,7 +87,6 @@
 
         <div class="art-info" aria-live="polite">
           <p class="art-name" data-art-name>Boiadeira</p>
-          <p class="art-tagline" data-art-tagline>Cacto, estrada e horizonte aberto.</p>
         </div>
 
         <div class="picker" role="radiogroup" aria-label="Arte do copo" data-picker></div>
@@ -98,7 +94,7 @@
 
       <aside class="studio" id="estudio" role="dialog" aria-modal="false" aria-labelledby="studio-title" hidden data-studio>
         <div class="studio-head">
-          <h2 id="studio-title">Estúdio da sua gravação</h2>
+          <h2 id="studio-title">Sua arte</h2>
           <button class="icon-btn" type="button" aria-label="Fechar estúdio" data-close-studio>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
           </button>
@@ -118,18 +114,10 @@
             </div>
             <p class="field-hint" data-upload-hint>SVG, PNG, JPG ou WebP. Fica no seu navegador, nada é enviado.</p>
           </fieldset>
-          <label class="field">
-            <span class="field-label">Nome gravado</span>
-            <input type="text" name="text" maxlength="22" autocomplete="off" value="Seu nome" data-field-text />
-          </label>
-          <fieldset class="field">
-            <legend class="field-label">Cor do copo</legend>
-            <div class="swatches" data-swatches></div>
-          </fieldset>
           <div class="studio-actions">
             <button class="btn btn--solid" type="submit">Girar o copo</button>
             <button class="btn btn--line" type="button" data-download-laser>Baixar a arte para o laser</button>
-            <p class="field-hint" data-download-hint>PNG preto e branco, 283 × 162 mm a 400 dpi. Preto = gravado.</p>
+            <p class="field-hint" data-download-hint>PNG preto e branco, 283 × 160 mm a 400 dpi. Preto = gravado.</p>
           </div>
         </form>
       </aside>
@@ -138,7 +126,7 @@
         <div class="section-head">
           <p class="eyebrow">Artes prontas</p>
           <h2 id="artes-title">Quatro gravações para começar</h2>
-          <p>Cada arte tem a sua cor, o seu elemento 3D e dá volta inteira no copo. Todas aceitam nome e cor de pintura.</p>
+          <p>Cada arte dá a volta no copo e pode ser baixada pronta para a fibra.</p>
         </div>
         <ul class="cards" data-cards></ul>
       </section>
@@ -151,7 +139,7 @@
         <ol class="steps">
           <li><span class="step-n" aria-hidden="true">1</span><h3>Escolha ou envie a arte</h3><p>Uma das prontas, ou o seu SVG/PNG: a imagem vira uma máscara por limiar de luminância, com opção de inverter.</p></li>
           <li><span class="step-n" aria-hidden="true">2</span><h3>A tinta sai, o inox aparece</h3><p>Onde a máscara vale 1, o copo ganha metal prateado e escovado. Onde vale 0, fica o preto fosco. A textura nasce num canvas, na hora.</p></li>
-          <li><span class="step-n" aria-hidden="true">3</span><h3>Baixe o arquivo do laser</h3><p>PNG preto e branco no tamanho real da volta do copo (283 × 162 mm, 400 dpi), com o DPI gravado no arquivo.</p></li>
+          <li><span class="step-n" aria-hidden="true">3</span><h3>Baixe o arquivo do laser</h3><p>PNG preto e branco no tamanho real da volta do copo (283 × 160 mm, 400 dpi), com o DPI gravado no arquivo.</p></li>
         </ol>
         <button class="btn btn--solid" type="button" data-open-studio>Abrir o estúdio</button>
       </section>
@@ -163,7 +151,7 @@
           <p>Esta página é um estudo de interação e performance. Cada otimização veio de um número medido, não de achismo.</p>
         </div>
         <dl class="stats">
-          <div><dt>Peso dos modelos 3D</dt><dd>157 KB <small>eram 18,2 MB (−99%). Pipeline gltf-transform: Meshopt, simplificação e texturas WebP.</small></dd></div>
+          <div><dt>Peso dos modelos 3D</dt><dd>159 KB <small>a primeira versão tinha 18,2 MB. Pipeline gltf-transform: Meshopt, simplificação e texturas WebP.</small></dd></div>
           <div><dt>Peso da página</dt><dd>0,74 MB <small>eram 22,3 MB. Thread principal ocupada com o mouse mexendo: de 36% para 14%.</small></dd></div>
           <div><dt>Lighthouse (A11y · BP · SEO)</dt><dd>100 · 100 · 100 <small>Performance também em 99 a 100 (era 76 no celular), medido com o Lighthouse.</small></dd></div>
         </dl>

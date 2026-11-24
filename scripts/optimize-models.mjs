@@ -37,17 +37,9 @@ function reindexCreased(angle = Math.PI / 5) {
 const RAW = new URL('../assets-src/models-raw/', import.meta.url).pathname;
 const OUT = new URL('../public/models/', import.meta.url).pathname;
 
-// Dois descartes antes de simplificar (os dois só aparecem na v1, a v0 carrega tudo cru):
-//  1) A textura "escovada" do inox (ruído PNG) vira ruído liso quando reduzida e não muda nada na tela.
-//  2) O corpo recebe a textura de gravação em runtime (canvas -> baseColor + metallicRoughness + normal), então a textura embutida
-//     nunca é vista (reveal="manual"): a metallicRoughness embutida sai, a baseColor fica só como slot (256 px).
-//  Sem textura, as UVs das peças que não são o corpo também sobram, e sem UV a emenda solda e a malha simplifica melhor.
-function dropUnusedTextures({ metal = 'Steel', roughness = 0.36, body = 'Body' } = {}) {
+// Só o corpo usa UV (a gravação do canvas). Sem UV nas outras peças a emenda solda e a malha simplifica melhor.
+function dropUvExceptBody(body = 'Body') {
   return (doc) => {
-    for (const m of doc.getRoot().listMaterials()) {
-      if (m.getName() === metal && m.getMetallicRoughnessTexture()) m.setMetallicRoughnessTexture(null).setRoughnessFactor(roughness);
-      if (m.getName() === body) m.setMetallicRoughnessTexture(null);
-    }
     for (const mesh of doc.getRoot().listMeshes())
       for (const prim of mesh.listPrimitives())
         if (prim.getMaterial()?.getName() !== body) prim.setAttribute('TEXCOORD_0', null);
@@ -57,7 +49,7 @@ function dropUnusedTextures({ metal = 'Steel', roughness = 0.36, body = 'Body' }
 // Quanto simplificar cada um. O copo é o herói (fica grande na tela), os elementos aparecem pequenos.
 // As bordas do copo ficam travadas (lockBorder) para a emenda do UV do corpo não abrir.
 const PLAN = {
-  cup: { ratio: 0.1, error: 0.0003, lockBorder: true, base: 256, other: 256 },
+  cup: { ratio: 0.5, error: 0.0002, lockBorder: true, base: 256, other: 256 },
   default: { ratio: 0.12, error: 0.006, lockBorder: false, base: 512, other: 256 },
 };
 
@@ -87,14 +79,14 @@ for (const file of (await readdir(RAW)).filter((f) => f.endsWith('.glb'))) {
   await doc.transform(
     dedup(),
     reindexCreased(),
-    ...(name === 'cup' ? [dropUnusedTextures()] : []),
+    ...(name === 'cup' ? [dropUvExceptBody()] : []),
     flatten(),
     join(),
     weld(),
     simplify({ simplifier: MeshoptSimplifier, ratio: plan.ratio, error: plan.error, lockBorder: plan.lockBorder }),
     textureCompress({ encoder: sharp, targetFormat: 'webp', slots: /^baseColor/, resize: [plan.base, plan.base], quality: 82 }),
     textureCompress({ encoder: sharp, targetFormat: 'webp', slots: /^(?!baseColor)/, resize: [plan.other, plan.other], quality: 70 }),
-    prune(),
+    prune({ keepAttributes: true }), // o UV do corpo é usado só pela textura do canvas: sem isto o prune o descarta
     dedup(),
     meshopt({ encoder: MeshoptEncoder, level: 'high' }),
   );

@@ -1,7 +1,7 @@
 # Gravura · copos térmicos gravados a laser em 3D
 
 Landing page 3D de uma marca fictícia de **copos térmicos pretos com gravação a fibra laser**. O copo gira, inclina em direção ao
-cursor e recebe a arte que você escolher: uma das quatro prontas ou a sua própria (SVG/PNG), com nome e cor de pintura. O diferencial
+cursor e recebe a arte que você escolher: uma das quatro prontas ou a sua própria (SVG/PNG). O diferencial
 é a gravação: o copo é **preto fosco** (pintura eletrostática) e a gravação **remove a tinta e mostra o inox escovado** por baixo. Nada de
 estampa colorida: a arte vira uma máscara e a máscara vira material (metal onde a tinta saiu, pintura onde ficou).
 
@@ -10,25 +10,27 @@ estampa colorida: a arte vira uma máscara e a máscara vira material (metal ond
 É também um estudo de front-end (irmão do [latinhas-3d](https://github.com/ErickkADR/latinhas-3d)): motion design, 3D no navegador e
 performance tratada como requisito, com cada otimização justificada por um número medido antes e depois.
 
-> Gravura é uma marca inventada. Nenhuma marca real de copo foi usada. O copo (formato "quencher": corpo cônico, base estreita, alça
-> lateral, tampa com canudo dobrado) e os elementos decorativos são **gerados por código** (`scripts/generate-models.mjs`).
+> Gravura é uma marca inventada; nome e logo de marcas reais de copo não aparecem na página. O copo é um **modelo real de copo térmico de 40 oz**
+> (corpo largo em cima, parte de baixo estreita, alça retangular, tampa e canudo reto), fornecido pelo Erick em SketchUp e convertido por
+> `scripts/convert-dae.mjs`. Os elementos decorativos são **gerados por código** (`scripts/generate-models.mjs`).
 > Personagens com direitos autorais não fazem parte do site nem do repositório: o upload do visitante cobre esse caso de uso.
 
 ## O que a página faz
 
-- **Copo 3D com `<model-viewer>`** (three.js por baixo) que inclina em direção ao ponteiro. Sem mouse (celular), ele passeia sozinho e o dedo assume.
-- **Elementos 3D em volta** (estrela de latão, losango de metal, chapinha gravada, faísca de cromo, um modelo por arte) com parallax de
-  profundidade e **campo de repulsão** que os afasta do ponteiro.
-- **Troca de arte coreografada com GSAP**: um círculo da cor nova abre a partir do copo, o copo gira 720° com **motion blur** e a gravação
-  troca **no pico do giro**; os elementos **implodem para dentro do copo, trocam de modelo e explodem** em posições novas.
-- **Estúdio "Sua gravação"**: escolher uma das artes ou **enviar a própria** (SVG, PNG, JPG, WebP; vira máscara por **limiar de luminância/alfa**,
-  com controle de limiar e opção de **inverter**), **digitar um nome** (gravado em texto) e **escolher a cor** da pintura (preto padrão + 6 cores).
-  Cada mudança recompõe a gravação e aplica no copo na hora.
-- **Baixar a arte para a fibra laser**: PNG preto e branco (preto = gravado) de **283 × 162 mm a 400 dpi (4457 × 2551 px)** com o DPI gravado no
-  arquivo (chunk `pHYs`), para o LightBurn/EzCad/CorelDRAW importarem já no tamanho certo. O arquivo é gerado no navegador, a partir da
-  máscara de 400 dpi (ou do vetor desenhado por código); nada é enviado a servidor.
-- **Responsivo de verdade**: no celular o menu é próprio (painel em tela cheia, foco preso, Esc fecha), o estúdio vira uma folha inferior e a cena
-  usa **4 elementos 3D em vez de 9**, textura de gravação de 1024 px em vez de 2048 e menos faíscas.
+- **Copo 3D real com `<model-viewer>`** (three.js por baixo) que inclina em direção ao ponteiro. Sem mouse (celular), ele passeia sozinho e o dedo assume.
+  Fundo **sempre o mesmo preto**, sem elementos flutuantes, faíscas nem troca de cor de fundo.
+- **Troca de arte coreografada com GSAP**: o copo gira 720° com **motion blur**, o nome da arte sai e volta e a gravação troca **no pico do giro**.
+- **Só a arte muda**: seletor de quatro artes prontas (Boiadeira, Poker, Mandala, Constelação) e "Sua arte", que **envia a própria** (SVG, PNG, JPG, WebP; vira máscara por
+  **limiar de luminância/alfa**, com controle de limiar e opção de **inverter**). Sem nome, sem cor: o copo é preto.
+- **Baixar a arte para a fibra laser**: PNG preto e branco (preto = gravado) de **283 × 160 mm a 400 dpi (4457 × 2520 px)** com o DPI gravado no arquivo
+  (chunk `pHYs`), para o LightBurn/EzCad/CorelDRAW importarem já no tamanho certo. Gerado no navegador; nada é enviado a servidor.
+- **Copo real, gravação no lugar certo**: a arte de 283 × 126 mm cai na parte estreita do copo (onde a volta tem ~283 a 314 mm, a medida para a qual a arte foi feita).
+- **Responsivo de verdade**: no celular o menu é próprio (painel em tela cheia, foco preso, Esc fecha), o estúdio vira uma folha inferior e a textura de gravação usa 1024 px em vez de 2048.
+
+> **v2 (24/11/2026):** copo real no lugar do gerado por código; sem os elementos 3D decorativos, faíscas, nome e cor da pintura; fundo preto fixo.
+> Números da v2 (mediana de 3, Lighthouse 13.6, local): celular **94 · 100 · 100 · 100** (TBT 291 ms, 0,59 MB), desktop **100 · 100 · 100 · 100** (TBT 34 ms, 0,55 MB). Com o mouse
+> mexendo: **0 recálculos de estilo/s** no desktop (7 no celular) e **4,1%** da thread principal no desktop (4,8% no celular), contra 36% na v0. Só `cup.glb` (51 KB) vai
+> para a rede. As seções sobre elementos, faíscas, nome e cor abaixo descrevem a v0/v1 e continuam no histórico do git.
 
 ## Como a gravação vira material
 
@@ -39,8 +41,8 @@ arte (máscara WebP binária | desenho por código | upload) + nome  ──►  
    normal leve: a tinta tem espessura, a borda da gravação pega luz
 ```
 
-- Medidas **físicas em mm**: o mapa do corpo é a planificação (283 × 220 mm); a arte pronta mantém os mm do arquivo, o nome vive numa faixa
-  abaixo dela. O que se vê no copo é o que sai no arquivo do laser.
+- Medidas **físicas em mm**: o mapa do corpo é a planificação do copo inteiro (298 mm de volta de referência × 284 mm de altura); a arte pronta mantém
+  os mm do arquivo. O nome vai na parte larga (volta de 408 mm) e é desenhado comprimido para não esticar. O UV do corpo é cilíndrico, gerado na conversão. O que se vê no copo é o que sai no arquivo do laser.
 - **Duas "pranchas" de textura (A/B)**: a arte nova é composta na reserva antes do giro e os 3 slots do material trocam no pico dele.
 - Texturas vêm de `createCanvasTexture()` do model-viewer: sem encodar PNG a cada tecla digitada. O `CanvasTexture` tem `flipY = true`, então os mapas são escritos de cabeça para baixo.
 - **Ambiente de estúdio** (`public/img/studio-env.jpg`, 10 KB, caixas de luz desenhadas em SVG): sem ele o inox fica chapado no ambiente cinza padrão.
@@ -111,6 +113,14 @@ scripts/               gerador e pipeline dos modelos, artes, imagens, mediçõe
 - **Fonte self-hosted** (Archivo, subconjunto latino só com o eixo de peso, 35 KB, com `preload`) e fonte de fallback com métricas ajustadas.
 - **Meshopt sem CDN:** `public/decoders/meshopt-ready.js` é vazio de propósito (ativa o decodificador que já vem no bundle do model-viewer).
 - **`prefers-reduced-motion`:** sem giro, sem blur, sem faíscas; a troca de arte vira troca direta.
+
+## O modelo real do copo (v2)
+
+Depois do estudo o copo gerado por código foi trocado por um **modelo real** em SketchUp (`.dae`/`.skp`), convertido por `scripts/convert-dae.mjs`:
+o SketchUp exporta cada face **duas vezes** (cor da frente e do verso no mesmo grupo), então o conversor mantém só a frente; centraliza o eixo do corpo,
+põe a base em y = 0, converte polegadas para metros e gera o UV cilíndrico do corpo (u = ângulo, v = altura; triângulos na costura passam de 1 e a textura
+repete). O modelo já era leve (4.718 triângulos, 350 KB cru) e saiu do pipeline com **49,9 KB**. Achado: o `prune` do gltf-transform descarta o UV de um material
+sem textura embutida (`keepAttributes: true` resolve). Os números do estudo abaixo (v0 → v1) são do copo gerado por código; os da v2 estão no fim da seção.
 
 ## O estudo: números antes e depois
 

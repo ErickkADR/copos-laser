@@ -6,7 +6,6 @@
     "dev": "vite",
     "build": "vite build && node scripts/clean-dist.mjs",
     "preview": "vite preview --port 4173",
-    "models:raw": "node scripts/generate-models.mjs",
     "models:optimize": "node scripts/optimize-models.mjs",
     "art:build": "node scripts/build-art.mjs",
     "env:build": "node scripts/build-env.mjs",
@@ -14,7 +13,8 @@
     "images:optimize": "node scripts/optimize-images.mjs",
     "measure:lighthouse": "node scripts/lighthouse.mjs http://localhost:4173",
     "measure:runtime": "node scripts/measure-runtime.mjs http://localhost:4173",
-    "measure:profile": "node scripts/profile.mjs http://localhost:4173"
+    "measure:profile": "node scripts/profile.mjs http://localhost:4173",
+    "models:convert": "node scripts/convert-dae.mjs"
   },
   "author": "Erick Dantas",
   "license": "MIT",
@@ -29,6 +29,7 @@
     "@gltf-transform/core": "^4.5.1",
     "@gltf-transform/extensions": "^4.5.1",
     "@gltf-transform/functions": "^4.5.1",
+    "@xmldom/xmldom": "^0.9.12",
     "lighthouse": "^13.6.0",
     "meshoptimizer": "^1.3.0",
     "playwright": "^1.65.1",

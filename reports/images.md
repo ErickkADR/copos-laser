@@ -1,7 +1,7 @@
 | Imagem | PNG original (2x) | WebP 480 | WebP 960 |
 |---|---:|---:|---:|
-| card-boiadeira | 747.2 KB | 9.0 KB | 25.9 KB |
-| card-constelacao | 411.1 KB | 6.4 KB | 15.5 KB |
-| card-mandala | 688.7 KB | 10.1 KB | 25.0 KB |
-| card-poker | 935.3 KB | 10.7 KB | 31.5 KB |
-| og (compartilhamento) | 245.1 KB | 65.0 KB (JPG 1200) | |
+| card-boiadeira | 1122.0 KB | 4.4 KB | 15.5 KB |
+| card-constelacao | 796.0 KB | 2.2 KB | 5.9 KB |
+| card-mandala | 1009.9 KB | 5.2 KB | 14.4 KB |
+| card-poker | 1261.6 KB | 5.7 KB | 20.0 KB |
+| og (compartilhamento) | 250.6 KB | 35.4 KB (JPG 1200) | |

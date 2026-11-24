@@ -2,23 +2,18 @@
 import { ARTS } from '../config/arts.js';
 
 export function createUI({ imgBase, imgExt }) {
-  const word = document.querySelector('[data-hero-word]');
   const name = document.querySelector('[data-art-name]');
-  const tagline = document.querySelector('[data-art-tagline]');
-  const reveal = document.querySelector('[data-reveal]');
   const picker = document.querySelector('[data-picker]');
   const cards = document.querySelector('[data-cards]');
 
   function setTexts(theme) {
-    word.textContent = theme.word;
     name.textContent = theme.name;
-    tagline.textContent = theme.tagline;
   }
 
   // ---- seletor ----
-  const options = [...ARTS.map((t) => ({ id: t.id, label: t.name, color: t.bg })), { id: 'custom', label: 'Sua gravação', color: 'conic-gradient(#c9cdd3, #5b6068, #eef0f3, #8a8f97, #c9cdd3)' }];
+  const options = [...ARTS.map((t) => ({ id: t.id, label: t.name })), { id: 'custom', label: 'Sua arte' }];
   picker.innerHTML = options
-    .map((o, i) => `<button type="button" role="radio" class="pick" data-theme="${o.id}" aria-checked="${i === 0}" tabindex="${i === 0 ? 0 : -1}"><span class="pick-dot" style="background:${o.color}" aria-hidden="true"></span><span class="pick-label">${o.label}</span></button>`)
+    .map((o, i) => `<button type="button" role="radio" class="pick" data-theme="${o.id}" aria-checked="${i === 0}" tabindex="${i === 0 ? 0 : -1}"><span class="pick-label">${o.label}</span></button>`)
     .join('');
   const buttons = [...picker.querySelectorAll('.pick')];
 
@@ -49,9 +44,9 @@ export function createUI({ imgBase, imgExt }) {
 
   // ---- cards (artes públicas; exemplos locais de dev não têm imagem de card) ----
   cards.innerHTML = ARTS.filter((t) => !t.local).map(
-    (t) => `<li class="card" style="--card-bg:${t.bg};--card-ink:${t.ink}">
+    (t) => `<li class="card">
       <img src="${imgBase}card-${t.id}-480.${imgExt}" srcset="${imgBase}card-${t.id}-480.${imgExt} 480w, ${imgBase}card-${t.id}-960.${imgExt} 960w" sizes="(max-width: 640px) 90vw, 300px" width="480" height="600" loading="lazy" decoding="async" alt="Copo preto com a arte ${t.name} gravada a laser" />
-      <div class="card-body"><h3>${t.name}</h3><p>${t.tagline}</p>
+      <div class="card-body"><h3>${t.name}</h3>
       <button class="btn btn--line" type="button" data-theme="${t.id}">Ver no copo<span class="sr-only"> ${t.name}</span></button></div>
     </li>`,
   ).join('');
@@ -63,5 +58,5 @@ export function createUI({ imgBase, imgExt }) {
     });
   }
 
-  return { setTexts, setActive, onPick, onCard, reveal, texts: [word, name, tagline] };
+  return { setTexts, setActive, onPick, onCard, texts: [name] };
 }

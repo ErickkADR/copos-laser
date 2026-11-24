@@ -17,9 +17,9 @@
 }
 
 :root {
-  /* cor do tema atual: trocada pelo theme-switch.js */
-  --bg: #e3a857;
-  --ink: #24140a;
+  /* fundo fixo: o mesmo preto nos dois projetos (copos e latinhas) */
+  --bg: #0a0a0b;
+  --ink: #f4f4f5;
   /* seções abaixo do herói */
   --paper: #f1f2f4;
   --text: #121316;

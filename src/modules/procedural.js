@@ -1,7 +1,7 @@
 // Artes de gravação desenhadas por código (zero byte de imagem). O contexto chega em milímetros, com a origem no canto superior
 // esquerdo da faixa da arte (283 x 126 mm); desenha-se em preto sobre transparente: o alfa é a máscara da gravação.
-// A volta do copo fecha em x = 283, então tudo que passa de uma borda reaparece na outra (wrap).
-import { ART_ZONE, BODY_MM } from '../config/engrave.js';
+// A faixa tem a largura das artes prontas (283 mm); as pontas se encontram nas costas, então tudo que passa de uma borda reaparece na outra (wrap).
+import { ART_ZONE, ART_W } from '../config/engrave.js';
 
 function rng(seed) {
   let a = seed >>> 0;
@@ -13,7 +13,7 @@ function rng(seed) {
   };
 }
 
-const W = BODY_MM.w;
+const W = ART_W;
 const H = ART_ZONE.h;
 
 function roseta(ctx, cx, cy, R) {

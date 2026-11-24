@@ -1,9 +1,13 @@
-// Geometria física da gravação. Tudo em milímetros: o mapa de textura do corpo do copo é a "planificação" do corpo
-// (circunferência média x altura), então 1 mm da arte = o mesmo tanto de pixels em qualquer lugar do mapa.
-export const BODY_MM = { w: 283, h: 220 }; // circunferência média (2π·44,5) e altura do corpo cônico
-export const ART_ZONE = { y: 34, h: 126 }; // faixa da arte, de ponta a ponta da volta (283 x 126 mm: o tamanho das artes prontas)
-export const NAME_ZONE = { y: 168, h: 28, maxW: 230 }; // faixa do nome, logo abaixo da arte
-export const EXPORT_ZONE = { y: ART_ZONE.y, w: BODY_MM.w, h: NAME_ZONE.y + NAME_ZONE.h - ART_ZONE.y }; // 283 x 162 mm: o que vai para a fibra
+// Geometria física da gravação, em milímetros. O copo é o modelo real (SketchUp -> GLB, scripts/convert-dae.mjs): corpo de 284 mm
+// de altura com a parte de baixo mais estreita (raio 45 a 50 mm) e a de cima larga (raio 65 mm). O mapa de textura é a planificação do
+// corpo inteiro: a largura é UMA volta na parte de baixo (circunferência de referência, ~298 mm), igual para todas as alturas.
+export const BODY_MM = { w: 298, h: 284 }; // referência 2π·47,5 mm; altura do corpo
+export const ART_ZONE = { y: 155, h: 126 }; // faixa da arte, contada do TOPO do corpo: de 3 a 129 mm acima da base (a parte estreita)
+export const ART_W = 283; // largura das artes prontas: quase a volta toda da parte estreita
+// nome na parte larga (raio 65 mm = 408 mm de volta): o mapa esticaria o texto em 408/298, então ele é desenhado comprimido por NAME_SX
+export const NAME_ZONE = { y: 66, h: 28, maxW: 230, sx: 298 / (2 * Math.PI * 65) };
+// arquivo do laser: a arte (283 x 126) e o nome (283 x 28), empilhados com 6 mm entre eles. Medidas reais, sem a compensação do mapa.
+export const EXPORT_ZONE = { w: ART_W, h: ART_ZONE.h + 6 + NAME_ZONE.h, nameY: ART_ZONE.h + 6 };
 export const LASER_DPI = 400;
 export const LASER_PX_PER_MM = LASER_DPI / 25.4;
 

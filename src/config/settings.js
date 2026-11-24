@@ -9,24 +9,12 @@ export const ENV_STUDIO = '/img/studio-env.jpg';
 export const BREAKPOINTS = { mobile: 640, tablet: 1024 };
 
 export const SETTINGS = {
-  // quantos elementos 3D flutuam em volta do copo, por tamanho de tela
-  elements: { desktop: 9, tablet: 7, mobile: 4 },
-  // tamanho máximo (px) do <model-viewer> de cada elemento; a profundidade escala para baixo
-  elementSize: { desktop: 170, tablet: 140, mobile: 104 },
   // inclinação do copo em direção ao cursor (graus) e suavização (0..1 por frame a 60 fps)
   tilt: { yaw: 30, pitch: 12, roll: 6, ease: 0.085 },
-  // parallax de profundidade: px de deslocamento por unidade de profundidade
-  parallax: 46,
-  // campo de repulsão em volta do ponteiro
-  repel: { radius: 230, strength: 120, ease: 0.14 },
   // troca de arte
   spin: { degrees: 720, duration: 1.5 },
-  // carregamento escalonado dos elementos (ms entre um e outro, depois que o copo carregou)
-  stagger: 160,
   // largura do mapa de textura da gravação
   texture: TEXTURE_W,
-  // faíscas (canvas 2D)
-  sparks: { desktop: 26, mobile: 10 },
 };
 
 export function deviceClass(width = window.innerWidth) {
