@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://copos-laser.vercel.app/sitemap.xml

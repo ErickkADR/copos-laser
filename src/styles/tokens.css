@@ -1,0 +1,15 @@
+:root {
+  /* cor do tema atual: trocada pelo theme-switch.js */
+  --bg: #e3a857;
+  --ink: #24140a;
+  /* seções abaixo do herói */
+  --paper: #f1f2f4;
+  --text: #121316;
+  --muted: #4a4e55;
+  --line: rgba(18, 19, 22, 0.16);
+  --font: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --radius: 22px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --gutter: clamp(16px, 4vw, 56px);
+  --header-h: 72px;
+}

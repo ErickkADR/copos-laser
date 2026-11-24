@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.vercel/
+.DS_Store
+# saídas cruas do gerador (regeneráveis com npm run models:raw / images:capture)
+assets-src/models-raw/
+assets-src/img-raw/
+public/models-raw/
+public/img-raw/
+reports/*.json
+reports/traces/
+# EXEMPLOS LOCAIS: arte de personagens com direitos autorais. Nunca no git nem no deploy (ver CLAUDE.md)
+exemplos-locais/
+public/locais/
+assets-src/
+reports/

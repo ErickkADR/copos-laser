@@ -1,0 +1,32 @@
+{
+ "boiadeira": {
+  "id": "boiadeira",
+  "widthMm": 271.32,
+  "heightMm": 126.47,
+  "screen": "boiadeira-2048.webp",
+  "laser": "boiadeira-laser.webp",
+  "screenPx": [
+   1963,
+   915
+  ],
+  "laserPx": [
+   4273,
+   1992
+  ]
+ },
+ "poker": {
+  "id": "poker",
+  "widthMm": 282.93,
+  "heightMm": 125.94,
+  "screen": "poker-2048.webp",
+  "laser": "poker-laser.webp",
+  "screenPx": [
+   2047,
+   911
+  ],
+  "laserPx": [
+   4456,
+   1984
+  ]
+ }
+}
