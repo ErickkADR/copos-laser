@@ -122,9 +122,8 @@ export function createElements(container, { count, size, base, mobile }) {
       // campo de repulsão: posição de tela calculada a partir do estado, sem ler o DOM
       let tx = 0, ty = 0;
       if (pointer.active && spread > 0.5) {
-        const r = it.wrap.getBoundingClientRect(); // v0: pergunta ao DOM onde o elemento está, a cada frame
-        const dx = r.left + r.width / 2 - pointer.x;
-        const dy = r.top + r.height / 2 - pointer.y;
+        const dx = metrics.cx + x + it.ox - pointer.x;
+        const dy = metrics.cy + y + it.oy - pointer.y;
         const d = Math.hypot(dx, dy) || 1;
         if (d < radius) {
           const f = (1 - d / radius) ** 2 * strength;

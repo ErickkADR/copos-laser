@@ -4,7 +4,6 @@ import './styles/index.css';
 import { ARTS, addLocalArts } from './config/arts.js';
 import { initMenu } from './modules/menu.js';
 import { createUI } from './modules/ui.js';
-import * as sceneModule from './scene.js';
 
 // exemplos com direitos autorais: só existem em dev (public/locais fica fora do git e do deploy)
 if (import.meta.env.DEV) await addLocalArts();
@@ -32,10 +31,12 @@ document.addEventListener('click', (e) => {
 });
 
 function boot() {
-  Promise.resolve(sceneModule).then(async (mod) => {
+  import('./scene.js').then(async (mod) => {
     scene = await mod.startScene({ ui, initial: new URLSearchParams(location.search).get('shot') ?? ARTS[0].id });
     for (const a of early.splice(0)) scene.handle(a);
   });
 }
 
-boot();
+// depois do primeiro frame pintado, sem disputar com ele
+if (document.readyState === 'complete') requestAnimationFrame(() => setTimeout(boot, 0));
+else window.addEventListener('load', () => requestAnimationFrame(() => setTimeout(boot, 0)), { once: true });

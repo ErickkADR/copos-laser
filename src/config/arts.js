@@ -4,7 +4,7 @@
 import manifest from './art-manifest.json';
 import { DEFAULT_PAINT } from './engrave.js';
 
-const mask = (id) => ({ kind: 'mask', url: `/art/${id}.svg`, laserUrl: `/art/${id}.svg`, widthMm: manifest[id].widthMm, heightMm: manifest[id].heightMm });
+const mask = (id) => ({ kind: 'mask', url: `/art/${manifest[id].screen}`, laserUrl: `/art/${manifest[id].laser}`, widthMm: manifest[id].widthMm, heightMm: manifest[id].heightMm });
 
 export const ARTS = [
   { id: 'boiadeira', name: 'Boiadeira', word: 'BOIADEIRA', tagline: 'Cacto, estrada e horizonte aberto.', bg: '#e3a857', ink: '#24140a', element: 'star', art: mask('boiadeira') },

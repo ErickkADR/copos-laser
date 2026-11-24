@@ -8,7 +8,7 @@ export const LASER_DPI = 400;
 export const LASER_PX_PER_MM = LASER_DPI / 25.4;
 
 // largura do mapa de textura por tamanho de tela (a altura sai da proporção do corpo)
-export const TEXTURE_W = { desktop: 2048, mobile: 2048 };
+export const TEXTURE_W = { desktop: 2048, mobile: 1024 };
 export const textureSize = (w) => [w, Math.round((w * BODY_MM.h) / BODY_MM.w)];
 
 // aço inox escovado (cor do metal exposto onde a tinta saiu) e rugosidades

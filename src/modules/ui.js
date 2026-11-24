@@ -50,7 +50,7 @@ export function createUI({ imgBase, imgExt }) {
   // ---- cards (artes públicas; exemplos locais de dev não têm imagem de card) ----
   cards.innerHTML = ARTS.filter((t) => !t.local).map(
     (t) => `<li class="card" style="--card-bg:${t.bg};--card-ink:${t.ink}">
-      <img src="${imgBase}card-${t.id}.png" alt="Copo preto com a arte ${t.name} gravada a laser" />
+      <img src="${imgBase}card-${t.id}-480.${imgExt}" srcset="${imgBase}card-${t.id}-480.${imgExt} 480w, ${imgBase}card-${t.id}-960.${imgExt} 960w" sizes="(max-width: 640px) 90vw, 300px" width="480" height="600" loading="lazy" decoding="async" alt="Copo preto com a arte ${t.name} gravada a laser" />
       <div class="card-body"><h3>${t.name}</h3><p>${t.tagline}</p>
       <button class="btn btn--line" type="button" data-theme="${t.id}">Ver no copo<span class="sr-only"> ${t.name}</span></button></div>
     </li>`,

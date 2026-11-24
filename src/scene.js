@@ -73,10 +73,17 @@ export async function startScene({ ui, initial }) {
   cup.el.dismissPoster();
   startLoop();
 
-  // v0: tudo de uma vez, sem escalonar nem esperar o ocioso
-  await elements.loadStaggered(first.element, 0);
-  for (const m of new Set(ARTS.map((t) => t.element).concat('spark'))) fetch(`${MODELS_BASE}${m}.glb`).catch(() => {});
-  ARTS.filter((t) => t.art.kind === 'mask').forEach((t) => loadImage(t.art.url).then((img) => (t.art.img = img)).catch(() => {}));
+  // carregamento escalonado: elementos um por vez, depois o resto no ocioso
+  idle(async () => {
+    await elements.loadStaggered(first.element, shot ? 0 : SETTINGS.stagger);
+    // upgrade do ambiente: reflexos de estúdio no inox, depois que a página já está interativa
+    setTimeout(() => { cupEl.setAttribute('environment-image', ENV_STUDIO); elements.setEnvironment(ENV_STUDIO); }, shot ? 0 : 2500);
+    idle(() => {
+      const others = [...new Set(ARTS.map((t) => t.element).concat('spark'))].filter((m) => m !== first.element);
+      for (const m of others) fetch(`${MODELS_BASE}${m}.glb`, { priority: 'low' }).catch(() => {});
+      ARTS.filter((t) => t !== first && t.art.kind === 'mask').forEach((t, i) => setTimeout(() => loadImage(t.art.url).then((img) => (t.art.img = img)).catch(() => {}), 400 * (i + 1)));
+    });
+  });
 
   return {
     handle(action) {
