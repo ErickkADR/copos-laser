@@ -28,7 +28,7 @@ performance tratada como requisito, com cada otimização justificada por um nú
 - **Responsivo de verdade**: no celular o menu é próprio (painel em tela cheia, foco preso, Esc fecha), o estúdio vira uma folha inferior e a textura de gravação usa 1024 px em vez de 2048.
 
 > **v2 (24/11/2026):** copo real no lugar do gerado por código; sem os elementos 3D decorativos, faíscas, nome e cor da pintura; fundo preto fixo.
-> Números da v2 (mediana de 3, Lighthouse 13.6, local): celular **94 · 100 · 100 · 100** (TBT 291 ms, 0,59 MB), desktop **100 · 100 · 100 · 100** (TBT 34 ms, 0,55 MB). Com o mouse
+> Números da v2 (mediana de 3, Lighthouse 13.6, local): celular **92 · 100 · 100 · 100** (TBT 356 ms, 0,60 MB), desktop **100 · 100 · 100 · 100** (TBT 45 ms, 0,56 MB). Com o mouse
 > mexendo: **0 recálculos de estilo/s** no desktop (7 no celular) e **4,1%** da thread principal no desktop (4,8% no celular), contra 36% na v0. Só `cup.glb` (51 KB) vai
 > para a rede. As seções sobre elementos, faíscas, nome e cor abaixo descrevem a v0/v1 e continuam no histórico do git.
 

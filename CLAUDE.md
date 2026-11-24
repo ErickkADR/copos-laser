@@ -68,3 +68,4 @@ O README é a vitrine (decisões + números antes/depois). Ler o README antes de
   removidos (histórico do git). `text` e `paint` continuam nos temas (nome vazio, preto) porque `engrave.js` ainda os suporta.
 - As seções acima que falam de nome na parte larga, cor da pintura na alça/tampa e elementos descrevem o que o código ainda suporta; a UI não expõe mais.
 - Hero com `height: 100vh` exato (sem altura mínima).
+- Fundo do herói: `public/img/bg-960.webp` e `bg-1920.webp` (parede escura de estúdio, 2 e 7 KB), em um `<img>` com `srcset`; é o mesmo arquivo do `latinhas-3d`. Original: `~/Downloads/dark-plain-gray-wall-product-background.jpg`. A outra imagem que o Erick mandou (concreto grunge preto) não está em uso.
