@@ -12,7 +12,7 @@ export const MODELS = {
     name_: { on: true, y: 215, h: 28, maxW: 230, sx: 1 }, tintNames: ['Handle'],
   },
   pint: {
-    file: 'pint.glb?v=5', name: 'Caneca', cam: { desktop: 0.54, mobile: 0.66 },
+    file: 'pint.glb?v=5', name: 'Copo', cam: { desktop: 0.54, mobile: 0.66 },
     body: { w: 237.5, h: 138.5 }, art: { y: 6, h: 126 }, wrap: 237.5,
     name_: { on: false, y: 0, h: 0, maxW: 0, sx: 1 }, tintNames: [],
   },

@@ -27,7 +27,7 @@ export async function startScene({ ui, initial }) {
   const cupEl = document.querySelector('[data-cup]');
   cupEl.setAttribute('environment-image', ENV_FAST);
   const cup = createCup(cupEl, {
-    initialModel: new URLSearchParams(location.search).get('model') === 'pint' ? 'pint' : 'cup',
+    initialModel: new URLSearchParams(location.search).get('model') === 'cup' ? 'cup' : 'pint', // abre no Copo; ?model=cup abre no Copo Quencher
     textureWidth: device === 'mobile' ? SETTINGS.texture.mobile : SETTINGS.texture.desktop,
     reducedMotion,
   });

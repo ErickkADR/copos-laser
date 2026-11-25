@@ -8,7 +8,7 @@ import { MODELS_BASE } from '../config/settings.js';
 
 const PITCH_SIGN = 1;
 
-export function createCup(el, { initialModel = 'cup', textureWidth, reducedMotion }) {
+export function createCup(el, { initialModel = 'pint', textureWidth, reducedMotion }) {
   const state = { yaw: 0, pitch: 0, roll: 0, spin: 0, drag: 0, dragPitch: 16 }; // dragPitch: inclinação do visitante (graus). Começa levemente inclinado para a tampa aparecer. // drag = giro livre do visitante (graus, sem limite: 360° e mais)
   let dragging = false;
   let vel = 0; // inércia do giro (graus por segundo)
