@@ -84,3 +84,10 @@ O README é a vitrine (decisões + números antes/depois). Ler o README antes de
 
 ## 25/11/2026 (2)
 - Tampa do copo em **inox escovado** (material `Lid`: metal 1, rugosidade 0,3, não recebe a cor da pintura; só a alça recebe). Mandala e Constelação foram **removidas** (e o `procedural.js` junto; o tipo `proc` não existe mais). Artes no seletor: Mulher-Maravilha, Homem de Ferro, Coringa, Boiadeira, Poker, Sua arte.
+
+## Pacote de artes de fibra laser (25/11/2026, pedido do Erick)
+- `~/Downloads/PACK FIBRA LASER.zip` (71 PNG preto e branco, ~1820 px). `node scripts/build-pack.mjs <pasta extraída>` gera `public/art/pack/*.webp` (máscara lossless binária, 3,5 MB no total) e `src/config/pack-manifest.json`; as artes entram em `ARTS` depois das 5 principais (Mulher-Maravilha continua a primeira). O ZIP **não** é versionado.
+- **Regra:** o CLARO vira inox, o ESCURO fica preto (papel branco = metal). `fit: 'contain'`: proporção preservada (altura cheia da faixa, largura em mm reais, centrada); o resto da volta fica pintado. Não esticar até 408 mm: as artes são 1,2 a 1,8:1 e deformaria rostos.
+- **Fora de propósito:** LEANDRO, VICTOR e RICARDO (pessoas do círculo do Erick; site público). Há retratos de pessoas reais e muito IP (mangás, jogos) no pacote: risco assumido pelo Erick.
+- Resolução do laser: o PNG exportado reusa a máscara de ~1820 px, ou seja, ~170 dpi no tamanho real (as artes principais têm máscara própria de 400 dpi).
+- UI: seletor do herói é uma lista com rolagem (~73 itens); no estúdio a arte é um `<select>`. Só as 4 primeiras artes são pré-carregadas; as outras baixam ao escolher.

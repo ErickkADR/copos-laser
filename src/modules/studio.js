@@ -25,7 +25,8 @@ export function initStudio({ switcher, cup, onSelectCustom }) {
   let live = 0;
 
   textInput.value = state.text;
-  chipsBox.innerHTML = ARTS.map((a, i) => `<label class="chip"><input type="radio" name="art" value="${a.id}" ${i === 0 ? 'checked' : ''}/><span>${a.name}</span></label>`).join('');
+  chipsBox.innerHTML = `<select name="art" class="select" aria-label="Arte">${ARTS.map((a) => `<option value="${a.id}">${a.name}</option>`).join('')}<option value="upload" hidden>Arte enviada</option></select>`;
+  const artSelect = chipsBox.querySelector('select');
 
   const isCustom = () => switcher.current?.id === 'custom';
 
@@ -63,7 +64,7 @@ export function initStudio({ switcher, cup, onSelectCustom }) {
       state.up = await readUpload(file);
       rebuildUpload();
       state.art = 'upload';
-      form.querySelectorAll('input[name="art"]').forEach((r) => (r.checked = false));
+      artSelect.value = 'upload';
       tools.hidden = false;
       hint.textContent = `${file.name}: preto vira inox. Ajuste o limiar; se a arte for clara, use Inverter.`;
       refresh();
@@ -76,7 +77,7 @@ export function initStudio({ switcher, cup, onSelectCustom }) {
     state.up = state.upArt = null;
     fileInput.value = '';
     state.art = ARTS[0].id;
-    form.querySelector(`input[name="art"][value="${state.art}"]`).checked = true;
+    artSelect.value = state.art;
     tools.hidden = true;
     hint.textContent = HINT_DEFAULT;
     refresh();
@@ -115,7 +116,7 @@ export function initStudio({ switcher, cup, onSelectCustom }) {
       const cur = ARTS.find((a) => a.id === switcher.current?.id);
       if (cur && state.art !== 'upload') {
         state.art = cur.id;
-        form.querySelector(`input[name="art"][value="${cur.id}"]`).checked = true;
+        artSelect.value = cur.id;
       }
       if (!state.textEdited) { state.text = cur?.text ?? state.text; textInput.value = state.text; }
       switcher.go(theme());

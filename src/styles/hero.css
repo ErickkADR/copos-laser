@@ -28,7 +28,8 @@
 
 .picker {
   position: absolute; right: var(--gutter); top: 50%; transform: translateY(-50%); z-index: 4;
-  display: flex; flex-direction: column; gap: 6px; align-items: flex-end; cursor: auto; touch-action: pan-x;
+  display: flex; flex-direction: column; gap: 4px; align-items: flex-end; cursor: auto; touch-action: pan-y;
+  max-height: min(72svh, 640px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--ink) 40%, transparent) transparent; padding-left: 8px;
   transition: opacity 0.3s;
 }
 .pick {
@@ -54,6 +55,7 @@ body.studio-open .picker { opacity: 0; pointer-events: none; }
   .hero-lede { font-size: 0.95rem; margin: 0 auto; }
   .cup-stage { transform: translateY(8%); }
   .picker {
+    max-height: none; padding-left: 0;
     left: 0; right: 0; top: auto; bottom: 14px; transform: none; flex-direction: row; justify-content: safe center; gap: 4px; flex-wrap: nowrap;
     overflow-x: auto; padding: 0 var(--gutter); scrollbar-width: none;
   }

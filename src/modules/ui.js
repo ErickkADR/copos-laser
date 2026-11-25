@@ -14,6 +14,7 @@ export function createUI() {
       const on = b.dataset.theme === id;
       b.setAttribute('aria-checked', String(on));
       b.tabIndex = on ? 0 : -1;
+      if (on) b.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     }
   }
 

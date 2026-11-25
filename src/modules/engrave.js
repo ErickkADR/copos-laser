@@ -4,7 +4,7 @@
 // Saem três mapas do mesmo canvas de máscara: baseColor, metallicRoughness (G = rugosidade, B = metal) e um normal leve (a tinta
 // tem espessura: a borda da gravação pega luz). Os mapas são escritos de cabeça para baixo de propósito: o CanvasTexture do
 // three tem flipY = true e o glTF espera a origem no topo.
-import { ART_ZONE, NAME_ZONE, BODY_MM, EXPORT_ZONE, STEEL, ROUGH, textureSize } from '../config/engrave.js';
+import { ART_ZONE, WRAP_MM, NAME_ZONE, BODY_MM, EXPORT_ZONE, STEEL, ROUGH, textureSize } from '../config/engrave.js';
 
 export const FONT = '"Archivo Variable", "Archivo", system-ui, sans-serif';
 
@@ -34,7 +34,12 @@ export function drawInk(ctx, spec, s, layout = BODY_LAYOUT, { laser = false } = 
   const ay = layout.artY * s;
   const W = layout.w * s, H = ART_ZONE.h * s; // a arte ocupa a volta INTEIRA (360°): da borda esquerda à direita do mapa
   if (art?.kind === 'mask' && (art.img || art.imgLaser)) {
-    ctx.drawImage((laser && art.imgLaser) || art.img, 0, ay, W, H);
+    const im = (laser && art.imgLaser) || art.img;
+    if (art.fit === 'contain') {
+      // proporção preservada: altura cheia da faixa, largura em mm reais (1 px do mapa na horizontal vale WRAP_MM / largura do mapa), centrada na volta
+      const hh = H, ww = Math.min(W, (H * art.aspect * W) / (WRAP_MM * s)) ;
+      ctx.drawImage(im, (W - ww) / 2, ay, ww, hh);
+    } else ctx.drawImage(im, 0, ay, W, H);
   } else if (art?.kind === 'upload' && art.layer) {
     ctx.drawImage(art.layer(Math.round(W), Math.round(H)), 0, ay);
   }

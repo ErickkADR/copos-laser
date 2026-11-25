@@ -56,7 +56,7 @@ export async function startScene({ ui, initial }) {
   // no ocioso: upgrade do ambiente (reflexos de estúdio no inox) e as máscaras das outras artes
   idle(() => {
     setTimeout(() => cupEl.setAttribute('environment-image', ENV_STUDIO), shot ? 0 : 2500);
-    ARTS.filter((t) => t !== first && t.art.kind === 'mask').forEach((t, i) => setTimeout(() => loadImage(t.art.url).then((img) => (t.art.img = img)).catch(() => {}), 400 * (i + 1)));
+    ARTS.slice(0, 4).filter((t) => t !== first && t.art.kind === 'mask').forEach((t, i) => setTimeout(() => loadImage(t.art.url).then((img) => (t.art.img = img)).catch(() => {}), 400 * (i + 1)));
   });
 
   return {
