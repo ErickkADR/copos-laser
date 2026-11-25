@@ -23,7 +23,9 @@ export function createCup(el, { src, textureWidth, reducedMotion }) {
   loaded.then(() => {
     const mats = el.model.materials;
     body = mats.find((m) => m.name === 'Body');
-    tinted = mats.filter((m) => m.name === 'Handle' || m.name === 'Lid');
+    tinted = mats.filter((m) => m.name === 'Handle');
+    // tampa de inox escovado (não pintada)
+    for (const m of mats.filter((m) => m.name === 'Lid')) { m.pbrMetallicRoughness.setBaseColorFactor([0.78, 0.8, 0.83, 1]); m.pbrMetallicRoughness.setMetallicFactor(1); m.pbrMetallicRoughness.setRoughnessFactor(0.3); }
     // os mapas vêm do canvas: os fatores do glTF multiplicam o mapa (metal 1 x B, rugosidade 1 x G)
     body.pbrMetallicRoughness.setMetallicFactor(1);
     body.pbrMetallicRoughness.setRoughnessFactor(1);

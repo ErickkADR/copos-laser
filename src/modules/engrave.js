@@ -4,8 +4,7 @@
 // Saem três mapas do mesmo canvas de máscara: baseColor, metallicRoughness (G = rugosidade, B = metal) e um normal leve (a tinta
 // tem espessura: a borda da gravação pega luz). Os mapas são escritos de cabeça para baixo de propósito: o CanvasTexture do
 // three tem flipY = true e o glTF espera a origem no topo.
-import { ART_ZONE, ART_W, NAME_ZONE, BODY_MM, EXPORT_ZONE, STEEL, ROUGH, textureSize } from '../config/engrave.js';
-import { PROCEDURAL } from './procedural.js';
+import { ART_ZONE, NAME_ZONE, BODY_MM, EXPORT_ZONE, STEEL, ROUGH, textureSize } from '../config/engrave.js';
 
 export const FONT = '"Archivo Variable", "Archivo", system-ui, sans-serif';
 
@@ -27,7 +26,6 @@ export function loadImage(url) {
 // ---------- 1. a tinta: tudo que será gravado, em preto sobre transparente ----------
 // `s` = px por mm. layout = onde cai cada coisa (mm, a partir do topo do canvas):
 //   corpo (padrão): arte em ART_ZONE.y, nome comprimido na parte larga; arquivo do laser: arte em 0 e nome logo abaixo, sem compressão.
-const ART_ZONE_PROC_H = 126; // altura de projeto das artes procedurais (mm)
 const BODY_LAYOUT = { w: BODY_MM.w, artY: ART_ZONE.y, nameCy: NAME_ZONE.y + NAME_ZONE.h / 2, nameSx: NAME_ZONE.sx };
 const LASER_LAYOUT = { w: EXPORT_ZONE.w, artY: 0, nameCy: EXPORT_ZONE.nameY + NAME_ZONE.h / 2, nameSx: 1 };
 
@@ -37,8 +35,6 @@ export function drawInk(ctx, spec, s, layout = BODY_LAYOUT, { laser = false } = 
   const W = layout.w * s, H = ART_ZONE.h * s; // a arte ocupa a volta INTEIRA (360°): da borda esquerda à direita do mapa
   if (art?.kind === 'mask' && (art.img || art.imgLaser)) {
     ctx.drawImage((laser && art.imgLaser) || art.img, 0, ay, W, H);
-  } else if (art?.kind === 'proc') {
-    ctx.save(); ctx.translate(0, ay); ctx.scale(W / ART_W, H / ART_ZONE_PROC_H); PROCEDURAL[art.draw](ctx); ctx.restore();
   } else if (art?.kind === 'upload' && art.layer) {
     ctx.drawImage(art.layer(Math.round(W), Math.round(H)), 0, ay);
   }

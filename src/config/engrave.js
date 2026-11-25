@@ -6,7 +6,6 @@ export const BODY_MM = { w: 298, h: 284 }; // referência 2π·47,5 mm; altura d
 // Medidas contadas do TOPO do corpo. A arte ocupa a volta INTEIRA (360°).
 export const ART_ZONE = { y: 12, h: 154 }; // altura útil da parte larga
 export const WRAP_MM = 2 * Math.PI * 65; // volta da parte larga (408 mm): a arte dá a volta INTEIRA (360°), sem lacuna
-export const ART_W = 283; // largura de projeto das artes prontas (procedurais); é esticada até WRAP_MM
 // O mapa tem uma largura só (298 mm): na parte larga a volta toda cabe nele, então a arte ocupa o mapa inteiro (sem compressão).
 export const NAME_ZONE = { y: 215, h: 28, maxW: 230, sx: 1 }; // texto na parte estreita
 // arquivo do laser: arte desenhada para a volta toda (408 x 154 mm) e o texto logo abaixo. Medidas reais.

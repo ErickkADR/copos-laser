@@ -81,3 +81,6 @@ O README é a vitrine (decisões + números antes/depois). Ler o README antes de
 - A arte dá a **volta inteira** da parte larga: o mapa todo (`W = layout.w`), altura 154 mm (`ART_ZONE`), esticada na horizontal (408 mm de volta contra os 283 mm do projeto original: ~1,2x com a altura nova). Sem `ART_SX`.
 - Arquivo do laser: **408 × 188 mm a 400 dpi** (arte da volta inteira em cima, texto embaixo). Arte enviada pelo visitante se **repete** lado a lado (sem distorcer) até fechar a volta.
 - Para arte nova: o ideal é proporção ~2,65:1 (408 × 154 mm), com as bordas esquerda e direita se encontrando (emenda nas costas).
+
+## 25/11/2026 (2)
+- Tampa do copo em **inox escovado** (material `Lid`: metal 1, rugosidade 0,3, não recebe a cor da pintura; só a alça recebe). Mandala e Constelação foram **removidas** (e o `procedural.js` junto; o tipo `proc` não existe mais). Artes no seletor: Mulher-Maravilha, Homem de Ferro, Coringa, Boiadeira, Poker, Sua arte.
