@@ -7,12 +7,13 @@
 //  pint (caneca de cerveja térmica, feita no Blender): medidas OFICIAIS do Classic Stay-Chill Beer Pint 16 oz (473 ml): 171 mm de altura x 95 mm de diâmetro (3,75" x 6,75"); corpo pintado de 138,5 mm entre as faixas de aço de 12 mm; volta média 237,5 mm.
 export const MODELS = {
   cup: {
-    // Copo Quencher 30 oz / 887 ml feito no Blender (assets-src/quencher.blend), seguindo a foto de referência do Erick: corpo largo e quase reto em cima (raio 45,2 -> 48,5 mm),
-    // degrau em z = 80 mm e base mais estreita (35% da altura; raio ~31,5 -> 36,2 mm), faixa fina de aço sob a tampa clara, alça retangular grossa. 274 mm de altura total (com canudo), corpo pintado de 215 mm.
-    // Mapa = volta de 294 mm (raio no meio da arte). Arte de 112 mm, 14 mm abaixo do topo (só na parte larga); o texto fica na base estreita (volta ~227 mm), esticado 1,30x.
-    file: 'cup.glb?v=6', name: 'Copo Quencher', cam: { desktop: 0.95, mobile: 1.0 },
-    body: { w: 294, h: 215 }, art: { y: 14, h: 112 }, wrap: 294,
-    name_: { on: true, y: 157, h: 26, maxW: 150, sx: 1.30 }, tintNames: ['Handle'],
+    // Copo Quencher feito no Blender (assets-src/quencher.blend), medido numa foto de frente do Erick (escala: 274 mm de altura total com canudo): corpo pintado de 190,7 mm,
+    // parte larga quase reta (raio 50,5 -> 52 mm) de z = 101 a 190,7 mm, degrau suave de 10 mm e base só ~10% mais estreita (raio 43 -> 46,7 mm) de z = 0 a 91 mm; faixa de aço de 10 mm;
+    // tampa clara do MESMO diâmetro do corpo (19 mm); aba arredondada no centro com o canudo; alça de 80 mm de altura e 52 mm para fora.
+    // Mapa = volta de 322 mm (raio no meio da arte). Arte de 78 mm (6 mm abaixo do topo), que se repete 2x na volta; texto de 24 mm na base (volta ~281 mm), esticado 1,15x.
+    file: 'cup.glb?v=7', name: 'Copo Quencher', cam: { desktop: 0.95, mobile: 1.0 },
+    body: { w: 322, h: 190.7 }, art: { y: 6, h: 78 }, wrap: 322,
+    name_: { on: true, y: 129, h: 24, maxW: 140, sx: 1.146 }, tintNames: ['Handle'],
   },
   pint: {
     file: 'pint.glb?v=7', name: 'Copo', cam: { desktop: 0.54, mobile: 0.66 },
