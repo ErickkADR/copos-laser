@@ -1,15 +1,39 @@
 // Geometria física da gravação, em milímetros. O copo é o modelo real (SketchUp -> GLB, scripts/convert-dae.mjs): corpo de 284 mm
 // de altura com a parte de baixo mais estreita (raio 45 a 50 mm) e a de cima larga (raio 65 mm). O mapa de textura é a planificação do
 // corpo inteiro: a largura é UMA volta na parte de baixo (circunferência de referência, ~298 mm), igual para todas as alturas.
-export const BODY_MM = { w: 298, h: 284 }; // referência 2π·47,5 mm; altura do corpo
-// Arte na parte LARGA de cima (raio 65 mm = 408 mm de volta, ~154 mm de altura útil); texto na parte ESTREITA de baixo (volta ~298 mm).
-// Medidas contadas do TOPO do corpo. A arte ocupa a volta INTEIRA (360°).
-export const ART_ZONE = { y: 12, h: 154 }; // altura útil da parte larga
-export const WRAP_MM = 2 * Math.PI * 65; // volta da parte larga (408 mm): a arte dá a volta INTEIRA (360°), sem lacuna
-// O mapa tem uma largura só (298 mm): na parte larga a volta toda cabe nele, então a arte ocupa o mapa inteiro (sem compressão).
-export const NAME_ZONE = { y: 215, h: 28, maxW: 230, sx: 1 }; // texto na parte estreita
-// arquivo do laser: arte desenhada para a volta toda (408 x 154 mm) e o texto logo abaixo. Medidas reais.
-export const EXPORT_ZONE = { w: Math.round(WRAP_MM), h: ART_ZONE.h + 6 + NAME_ZONE.h, nameY: ART_ZONE.h + 6 };
+// Cada modelo de copo tem a sua geometria. Os objetos abaixo são MUTÁVEIS e preenchidos por useModel(id): quem importa BODY_MM, ART_ZONE...
+// sempre vê o modelo atual. Medidas em mm, contadas do TOPO do corpo pintado.
+//  cup  (térmico 40 oz): corpo de 284 mm; arte na parte LARGA de cima (raio 65 mm = 408 mm de volta), texto na parte estreita de baixo.
+//  pint (caneca de cerveja térmica, feita no Blender): corpo pintado de 101,5 mm entre a faixa de aço do topo e o anel da base; volta média 254 mm.
+export const MODELS = {
+  cup: {
+    file: 'cup.glb', name: 'Térmico 40 oz', cam: { desktop: 1.25, mobile: 1.3 },
+    body: { w: 298, h: 284 }, art: { y: 12, h: 154 }, wrap: 2 * Math.PI * 65,
+    name_: { on: true, y: 215, h: 28, maxW: 230, sx: 1 }, tintNames: ['Handle'],
+  },
+  pint: {
+    file: 'pint.glb', name: 'Caneca', cam: { desktop: 0.64, mobile: 0.72 },
+    body: { w: 254, h: 101.5 }, art: { y: 5, h: 91 }, wrap: 254,
+    name_: { on: false, y: 0, h: 0, maxW: 0, sx: 1 }, tintNames: [],
+  },
+};
+export const MODEL = { id: 'cup' };
+export const BODY_MM = { w: 0, h: 0 };
+export const ART_ZONE = { y: 0, h: 0 };
+export const NAME_ZONE = { on: true, y: 0, h: 0, maxW: 0, sx: 1 };
+export const WRAP = { mm: 0 }; // volta onde a arte dá os 360° (mm)
+export const EXPORT_ZONE = { w: 0, h: 0, nameY: 0 }; // arquivo do laser: arte da volta inteira + texto logo abaixo, em medidas reais
+export function useModel(id) {
+  const m = MODELS[id];
+  MODEL.id = id;
+  Object.assign(BODY_MM, m.body);
+  Object.assign(ART_ZONE, m.art);
+  Object.assign(NAME_ZONE, m.name_);
+  WRAP.mm = m.wrap;
+  Object.assign(EXPORT_ZONE, { w: Math.round(m.wrap), h: m.art.h + (m.name_.on ? 6 + m.name_.h : 0), nameY: m.art.h + 6 });
+  return m;
+}
+useModel('cup');
 export const LASER_DPI = 400;
 export const LASER_PX_PER_MM = LASER_DPI / 25.4;
 

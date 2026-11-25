@@ -4,7 +4,7 @@
 // Saem três mapas do mesmo canvas de máscara: baseColor, metallicRoughness (G = rugosidade, B = metal) e um normal leve (a tinta
 // tem espessura: a borda da gravação pega luz). Os mapas são escritos de cabeça para baixo de propósito: o CanvasTexture do
 // three tem flipY = true e o glTF espera a origem no topo.
-import { ART_ZONE, WRAP_MM, NAME_ZONE, BODY_MM, EXPORT_ZONE, STEEL, ROUGH, textureSize } from '../config/engrave.js';
+import { ART_ZONE, WRAP, NAME_ZONE, BODY_MM, EXPORT_ZONE, STEEL, ROUGH, textureSize } from '../config/engrave.js';
 
 export const FONT = '"Archivo Variable", "Archivo", system-ui, sans-serif';
 
@@ -26,24 +26,24 @@ export function loadImage(url) {
 // ---------- 1. a tinta: tudo que será gravado, em preto sobre transparente ----------
 // `s` = px por mm. layout = onde cai cada coisa (mm, a partir do topo do canvas):
 //   corpo (padrão): arte em ART_ZONE.y, nome comprimido na parte larga; arquivo do laser: arte em 0 e nome logo abaixo, sem compressão.
-const BODY_LAYOUT = { w: BODY_MM.w, artY: ART_ZONE.y, nameCy: NAME_ZONE.y + NAME_ZONE.h / 2, nameSx: NAME_ZONE.sx };
-const LASER_LAYOUT = { w: EXPORT_ZONE.w, artY: 0, nameCy: EXPORT_ZONE.nameY + NAME_ZONE.h / 2, nameSx: 1 };
+const bodyLayout = () => ({ w: BODY_MM.w, artY: ART_ZONE.y, nameCy: NAME_ZONE.y + NAME_ZONE.h / 2, nameSx: NAME_ZONE.sx });
+const laserLayout = () => ({ w: EXPORT_ZONE.w, artY: 0, nameCy: EXPORT_ZONE.nameY + NAME_ZONE.h / 2, nameSx: 1 });
 
-export function drawInk(ctx, spec, s, layout = BODY_LAYOUT, { laser = false } = {}) {
+export function drawInk(ctx, spec, s, layout = bodyLayout(), { laser = false } = {}) {
   const art = spec.art;
   const ay = layout.artY * s;
   const W = layout.w * s, H = ART_ZONE.h * s; // a arte ocupa a volta INTEIRA (360°): da borda esquerda à direita do mapa
   if (art?.kind === 'mask' && (art.img || art.imgLaser)) {
     const im = (laser && art.imgLaser) || art.img;
     if (art.fit === 'contain') {
-      // proporção preservada: altura cheia da faixa, largura em mm reais (1 px do mapa na horizontal vale WRAP_MM / largura do mapa), centrada na volta
-      const hh = H, ww = Math.min(W, (H * art.aspect * W) / (WRAP_MM * s)) ;
+      // proporção preservada: altura cheia da faixa, largura em mm reais (1 px do mapa na horizontal vale WRAP.mm / largura do mapa), centrada na volta
+      const hh = H, ww = Math.min(W, (H * art.aspect * W) / (WRAP.mm * s)) ;
       ctx.drawImage(im, (W - ww) / 2, ay, ww, hh);
     } else ctx.drawImage(im, 0, ay, W, H);
   } else if (art?.kind === 'upload' && art.layer) {
     ctx.drawImage(art.layer(Math.round(W), Math.round(H)), 0, ay);
   }
-  if (spec.text?.trim()) drawName(ctx, spec.text.trim(), s, layout);
+  if (NAME_ZONE.on && spec.text?.trim()) drawName(ctx, spec.text.trim(), s, layout);
 }
 
 function drawName(ctx, text, s, layout) {
@@ -201,7 +201,7 @@ export async function renderLaser(spec, { pxPerMm, zone = EXPORT_ZONE }) {
   const ink = canvas(w, h);
   const ctx = ink.getContext('2d', { willReadFrequently: true });
   if (spec.art?.kind === 'mask' && spec.art.laserUrl) spec = { ...spec, art: { ...spec.art, imgLaser: await loadImage(spec.art.laserUrl) } }; // cópia: o tema original não muda
-  drawInk(ctx, spec, pxPerMm, LASER_LAYOUT, { laser: true });
+  drawInk(ctx, spec, pxPerMm, laserLayout(), { laser: true });
   const img = ctx.getImageData(0, 0, w, h);
   const d = img.data;
   for (let i = 0; i < d.length; i += 4) {

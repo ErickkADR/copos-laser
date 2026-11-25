@@ -50,6 +50,7 @@ function dropUvExceptBody(body = 'Body') {
 // As bordas do copo ficam travadas (lockBorder) para a emenda do UV do corpo não abrir.
 const PLAN = {
   cup: { ratio: 0.5, error: 0.0002, lockBorder: true, base: 256, other: 256 },
+  pint: { ratio: 0.5, error: 0.0002, lockBorder: true, base: 256, other: 256 },
   default: { ratio: 0.12, error: 0.006, lockBorder: false, base: 512, other: 256 },
 };
 
@@ -79,7 +80,7 @@ for (const file of (await readdir(RAW)).filter((f) => f.endsWith('.glb'))) {
   await doc.transform(
     dedup(),
     reindexCreased(),
-    ...(name === 'cup' ? [dropUvExceptBody()] : []),
+    ...(['cup', 'pint'].includes(name) ? [dropUvExceptBody()] : []),
     flatten(),
     join(),
     weld(),

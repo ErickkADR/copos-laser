@@ -7,3 +7,12 @@
 .brand-mark { width: 26px; height: 26px; }
 .header-cta { min-height: 44px; }
 @media (max-width: 860px) { :root { --header-h: 64px; } .header-cta { min-height: 40px; padding: 0 16px; font-size: 0.92rem; } }
+
+.model-switch { display: inline-flex; padding: 3px; border-radius: 999px; background: rgba(255, 255, 255, 0.08); margin-left: auto; }
+.model-switch button { min-height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: none; color: var(--ink); font-weight: 700; font-size: 0.92rem; cursor: pointer; transition: background-color 0.25s, color 0.25s; }
+.model-switch button[aria-checked='true'] { background: var(--ink); color: var(--bg); }
+.model-switch button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+@media (max-width: 860px) { .model-switch { margin-left: 0; } .model-switch button { min-height: 36px; padding: 0 10px; font-size: 0.82rem; } .brand span { display: none; } .header-cta { font-size: 0.82rem !important; padding: 0 12px !important; } }
+
+.model-switch button, .header-cta { white-space: nowrap; }
+@media (max-width: 860px) { .site-header { gap: 8px; } .model-switch button { padding: 0 9px; font-size: 0.78rem; } .header-cta { font-size: 0.78rem !important; padding: 0 10px !important; min-height: 36px !important; } }

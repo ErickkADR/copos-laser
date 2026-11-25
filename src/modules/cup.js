@@ -3,35 +3,57 @@
 import { SETTINGS } from '../config/settings.js';
 import { pointer, idleSway } from './pointer.js';
 import { createEngraver, loadImage } from './engrave.js';
+import { MODELS, useModel } from '../config/engrave.js';
+import { MODELS_BASE } from '../config/settings.js';
 
-export function createCup(el, { src, textureWidth, reducedMotion }) {
+export function createCup(el, { initialModel = 'cup', textureWidth, reducedMotion }) {
   const state = { yaw: 0, pitch: 0, roll: 0, spin: 0, drag: 0 }; // drag = giro livre do visitante (graus, sem limite: 360° e mais)
   let dragging = false;
   let vel = 0; // inércia do giro (graus por segundo)
   const blurNode = document.querySelector('[data-spin-blur]');
-  const engraver = createEngraver(textureWidth);
+  let engraver = null;
   let body = null;
-  let tinted = []; // alça e tampa levam a cor da pintura (copo de uma cor só, como o real)
+  let tinted = []; // peças que levam a cor da pintura (alça do copo térmico)
   let sets = null;
   let active = 0;
   let lastOrientation = '';
   let lastSpin = 0;
   let blur = 0;
+  let loaded = null;
+  let modelId = null;
 
-  const loaded = new Promise((resolve) => el.addEventListener('load', resolve, { once: true }));
-  el.src = src;
-  loaded.then(() => {
-    const mats = el.model.materials;
-    body = mats.find((m) => m.name === 'Body');
-    tinted = mats.filter((m) => m.name === 'Handle');
-    // tampa de inox escovado (não pintada)
-    for (const m of mats.filter((m) => m.name === 'Lid')) { m.pbrMetallicRoughness.setBaseColorFactor([0.78, 0.8, 0.83, 1]); m.pbrMetallicRoughness.setMetallicFactor(1); m.pbrMetallicRoughness.setRoughnessFactor(0.3); }
-    // os mapas vêm do canvas: os fatores do glTF multiplicam o mapa (metal 1 x B, rugosidade 1 x G)
-    body.pbrMetallicRoughness.setMetallicFactor(1);
-    body.pbrMetallicRoughness.setRoughnessFactor(1);
-    body.pbrMetallicRoughness.setBaseColorFactor([1, 1, 1, 1]);
-    sets = [makeSet(), makeSet()];
-  });
+  // Carrega um modelo (cup | pint): liga os materiais, recria o motor de gravação (cada modelo tem a sua geometria) e as pranchas de textura.
+  function loadModel(id) {
+    modelId = id;
+    const cfg = useModel(id);
+    el.dataset.model = id;
+    loaded = new Promise((resolve) => el.addEventListener('load', resolve, { once: true })).then(() => {
+      const mats = el.model.materials;
+      body = mats.find((m) => m.name === 'Body');
+      tinted = mats.filter((m) => cfg.tintNames.includes(m.name));
+      // tampa e aço: inox escovado, não pintados
+      for (const m of mats.filter((m) => m.name === 'Lid' || m.name === 'Steel')) { m.pbrMetallicRoughness.setBaseColorFactor([0.78, 0.8, 0.83, 1]); m.pbrMetallicRoughness.setMetallicFactor(1); m.pbrMetallicRoughness.setRoughnessFactor(0.3); }
+      // os mapas vêm do canvas: os fatores do glTF multiplicam o mapa (metal 1 x B, rugosidade 1 x G)
+      body.pbrMetallicRoughness.setMetallicFactor(1);
+      body.pbrMetallicRoughness.setRoughnessFactor(1);
+      body.pbrMetallicRoughness.setBaseColorFactor([1, 1, 1, 1]);
+      engraver = createEngraver(textureWidth);
+      sets = [makeSet(), makeSet()];
+      active = 0;
+    });
+    el.setAttribute('camera-orbit', `0deg 84deg ${window.innerWidth <= 860 ? cfg.cam.mobile : cfg.cam.desktop}m`);
+    el.src = `${MODELS_BASE}${cfg.file}`;
+    return loaded;
+  }
+  loadModel(initialModel);
+
+  // Troca de modelo (copo térmico <-> caneca): carrega o outro .glb e repinta a arte atual no novo corpo.
+  async function switchModel(id, spec) {
+    if (id === modelId) return;
+    await loadModel(id);
+    await first(spec);
+    el.dismissPoster?.();
+  }
 
   function makeSet() {
     const tex = { base: el.createCanvasTexture(), mr: el.createCanvasTexture(), normal: el.createCanvasTexture() };
@@ -141,5 +163,5 @@ export function createCup(el, { src, textureWidth, reducedMotion }) {
     }
   }
 
-  return { el, state, loaded, tick, enableDrag, prepare, swap, paintLive, first, engraver };
+  return { el, state, get loaded() { return loaded; }, get modelId() { return modelId; }, switchModel, tick, enableDrag, prepare, swap, paintLive, first };
 }

@@ -91,3 +91,9 @@ O README é a vitrine (decisões + números antes/depois). Ler o README antes de
 - **Fora de propósito:** LEANDRO, VICTOR e RICARDO (pessoas do círculo do Erick; site público). Há retratos de pessoas reais e muito IP (mangás, jogos) no pacote: risco assumido pelo Erick.
 - Resolução do laser: o PNG exportado reusa a máscara de ~1820 px, ou seja, ~170 dpi no tamanho real (as artes principais têm máscara própria de 400 dpi).
 - UI: seletor do herói é uma lista com rolagem (~73 itens); no estúdio a arte é um `<select>`. Só as 4 primeiras artes são pré-carregadas; as outras baixam ao escolher.
+
+## Dois modelos de copo (25/11/2026, pedido do Erick)
+- **Seletor de modelo** no cabeçalho: "Térmico 40 oz" (`cup.glb`, SketchUp) e "Caneca" (`pint.glb`, **feito no Blender via MCP**: corpo preto cônico, faixa de aço em cima, anel de aço embaixo, tampa com aba; fonte `assets-src/pint.blend`, exportado para `assets-src/models-raw/pint.glb` e otimizado por `npm run models:optimize`).
+- Cada modelo tem a sua geometria em `config/engrave.js` (`MODELS`): `useModel(id)` preenche os objetos mutáveis `BODY_MM`, `ART_ZONE`, `NAME_ZONE`, `WRAP`, `EXPORT_ZONE`. A caneca tem 101,5 mm de corpo pintado, volta de 254 mm, arte de 91 mm de altura e **sem texto gravado** (`name_.on = false`); o arquivo do laser da caneca sai com 254 × 91 mm a 400 dpi.
+- `cup.js` recarrega o `.glb` (`switchModel`), recria o motor de gravação e repinta a arte atual. `?model=pint` abre direto na caneca.
+- Para criar o `.glb` no Blender: materiais `Body` (com UV cilíndrico: u = ângulo, 0,5 de frente = -Y do Blender; v = altura só no corpo pintado), `Steel` e `Lid`; exportar com y-up. O `Body` tem que ser a ÚNICA peça com UV.

@@ -15,6 +15,12 @@ ui.onPick((id, btn) => {
   ui.setActive(id);
   send(id === 'custom' ? { type: 'studio', trigger: btn } : { type: 'theme', id });
 });
+document.querySelector('[data-model-switch]').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-model]');
+  if (!b) return;
+  for (const x of e.currentTarget.querySelectorAll('[data-model]')) x.setAttribute('aria-checked', String(x === b));
+  send({ type: 'model', id: b.dataset.model });
+});
 document.addEventListener('click', (e) => {
   const t = e.target.closest('[data-open-studio]');
   if (t && !scene) early.push({ type: 'studio', trigger: t });

@@ -4,7 +4,7 @@ self.ModelViewerElement = { ...(self.ModelViewerElement || {}), meshoptDecoderLo
 await import('@google/model-viewer');
 
 import { ARTS } from './config/arts.js';
-import { SETTINGS, MODELS_BASE, ENV_FAST, ENV_STUDIO, deviceClass, prefersReducedMotion } from './config/settings.js';
+import { SETTINGS, ENV_FAST, ENV_STUDIO, deviceClass, prefersReducedMotion } from './config/settings.js';
 import { patchModelViewer } from './modules/mv-patch.js';
 import { addTick, startLoop, pause, resume } from './modules/loop.js';
 import { initPointer, pointer } from './modules/pointer.js';
@@ -26,10 +26,8 @@ export async function startScene({ ui, initial }) {
 
   const cupEl = document.querySelector('[data-cup]');
   cupEl.setAttribute('environment-image', ENV_FAST);
-  // celular: mais longe, para o copo não subir sobre o texto
-  cupEl.setAttribute('camera-orbit', `0deg 84deg ${window.innerWidth <= 860 ? '1.3m' : '1.25m'}`);
   const cup = createCup(cupEl, {
-    src: `${MODELS_BASE}cup.glb`,
+    initialModel: new URLSearchParams(location.search).get('model') === 'pint' ? 'pint' : 'cup',
     textureWidth: device === 'mobile' ? SETTINGS.texture.mobile : SETTINGS.texture.desktop,
     reducedMotion,
   });
@@ -63,6 +61,7 @@ export async function startScene({ ui, initial }) {
     handle(action) {
       if (action.type === 'theme') switcher.go(byId(action.id));
       if (action.type === 'studio') studio.open(action.trigger);
+      if (action.type === 'model') cup.switchModel(action.id, switcher.current);
     },
   };
 }
