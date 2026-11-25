@@ -11,14 +11,12 @@ O README é a vitrine (decisões + números antes/depois). Ler o README antes de
 - Publicar: `npx vercel --prod` na pasta (o projeto Vercel não está ligado ao GitHub; push não publica). Alias `copos-laser.vercel.app`.
 - Prints e medições usam o **Chrome instalado** (`channel: 'chrome'`), não o Chromium do Playwright.
 
-## DIREITO AUTORAL (regra do Erick, 24/11/2026) — leia antes de mexer em arte
-- Homem de Ferro, Coringa e Mulher-Maravilha são personagens com direitos autorais. As 3 artes (SVG do Erick) ficam **só como exemplos
-  locais**: `exemplos-locais/*.svg` (fonte) e `public/locais/` (máscaras geradas). As duas pastas estão no `.gitignore` e no
-  `.vercelignore`, e o `npm run build` ainda apaga `dist/locais`. Em dev (`import.meta.env.DEV`) elas aparecem no seletor e no estúdio
-  (`addLocalArts` em `config/arts.js`); em produção o código nem existe (tree-shaking).
-- No deploy público só entram **Boiadeira e Poker** (do Erick) + **Mandala e Constelação** (desenhadas por código, sem imagem).
-- Antes de publicar: `git ls-files | grep -iE "locais|homem|coringa|maravilha"` e `grep -rIil "homem de ferro\|coringa\|maravilha" dist` têm que ser vazios.
-  O upload do visitante cobre o caso de uso de arte própria. Se aparecer a og.jpg/print com o seletor de dev aberto, refazer a partir do `npm run preview`.
+## DIREITO AUTORAL (decisão do Erick, 25/11/2026) — leia antes de mexer em arte
+- **Mudou:** antes (24/11) Homem de Ferro, Coringa e Mulher-Maravilha eram só exemplos locais, fora do git e do deploy. Em 25/11 o Erick pediu para colocá-los **fixos no site público**,
+  com a **Mulher-Maravilha como a primeira** (a que aparece ao entrar). São personagens com direitos autorais e o repositório é público: o risco é dele (avisado na época). Se alguém
+  reclamar, tirar as 3 de `ARTS` (`config/arts.js`) e de `scripts/build-art.mjs`, rodar `npm run art:build` e apagar `public/art/{mulher-maravilha,homem-de-ferro,coringa}-*.webp`.
+- Ordem no seletor: Mulher-Maravilha, Homem de Ferro, Coringa, Boiadeira, Poker, Mandala, Constelação. Fontes SVG em `assets-src/arte/`; a Mulher-Maravilha é arte em negativo (`invert: true` no build).
+- O upload do visitante continua existindo.
 - **Marca:** nada de "Stanley" em texto, nome de arquivo, logo ou commit. **Exceção pedida pelo Erick (24/11/2026):** o copo é um modelo real de copo
   térmico de 40 oz que ele forneceu (`~/Downloads/copo+stanley.skp` e `.dae`, ZIP do SketchUp). Só o `public/models/cup.glb` otimizado é versionado e vai
   para o deploy; a fonte (`.skp/.dae`) **não** entra no git. Origem e licença do modelo são desconhecidas (parece de galeria 3D pública): se algum dia

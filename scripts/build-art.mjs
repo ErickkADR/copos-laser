@@ -13,12 +13,13 @@ const LASER_PX_PER_MM = 400 / 25.4;
 const root = (p) => new URL(`../${p}`, import.meta.url).pathname;
 
 const PUBLIC = [
+  { id: 'mulher-maravilha', src: 'assets-src/arte/mulher-maravilha.svg', out: 'public/art/', invert: true }, // arte em negativo: branco sobre fundo escuro
+  { id: 'homem-de-ferro', src: 'assets-src/arte/homem-de-ferro.svg', out: 'public/art/' },
+  { id: 'coringa', src: 'assets-src/arte/coringa.svg', out: 'public/art/' },
   { id: 'boiadeira', src: 'assets-src/arte/boiadeira.svg', out: 'public/art/', unit: 'pt' }, // SVG do PDF: sem unidade = pontos
   { id: 'poker', src: 'assets-src/arte/poker.svg', out: 'public/art/' },
 ];
-const LOCAL = (await readdir(root('exemplos-locais')).catch(() => []))
-  .filter((f) => f.endsWith('.svg'))
-  .map((f) => ({ id: f.replace('.svg', ''), src: `exemplos-locais/${f}`, out: 'public/locais/', invert: f.startsWith('mulher') }));
+const LOCAL = [];
 
 const UNITS = { mm: 1, pt: 25.4 / 72, px: 25.4 / 96, cm: 10, in: 25.4 };
 function sizeMm(svg, defaultUnit = 'px') {

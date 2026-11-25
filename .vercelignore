@@ -9,8 +9,5 @@ public/models-raw/
 public/img-raw/
 reports/*.json
 reports/traces/
-# EXEMPLOS LOCAIS: arte de personagens com direitos autorais. Nunca no git nem no deploy (ver CLAUDE.md)
-exemplos-locais/
-public/locais/
 assets-src/
 reports/

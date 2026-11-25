@@ -4,7 +4,7 @@
   "description": "Landing 3D de copos térmicos pretos com gravação a fibra laser: model-viewer + GSAP + Vite, textura de gravação gerada em canvas a partir de uma máscara.",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/clean-dist.mjs",
+    "build": "vite build",
     "preview": "vite preview --port 4173",
     "models:optimize": "node scripts/optimize-models.mjs",
     "art:build": "node scripts/build-art.mjs",

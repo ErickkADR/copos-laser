@@ -1,4 +1,49 @@
 {
+ "mulher-maravilha": {
+  "id": "mulher-maravilha",
+  "widthMm": 282.93,
+  "heightMm": 125.94,
+  "screen": "mulher-maravilha-2048.webp",
+  "laser": "mulher-maravilha-laser.webp",
+  "screenPx": [
+   2047,
+   911
+  ],
+  "laserPx": [
+   4456,
+   1984
+  ]
+ },
+ "homem-de-ferro": {
+  "id": "homem-de-ferro",
+  "widthMm": 282.93,
+  "heightMm": 125.94,
+  "screen": "homem-de-ferro-2048.webp",
+  "laser": "homem-de-ferro-laser.webp",
+  "screenPx": [
+   2047,
+   911
+  ],
+  "laserPx": [
+   4456,
+   1984
+  ]
+ },
+ "coringa": {
+  "id": "coringa",
+  "widthMm": 282.93,
+  "heightMm": 131.94,
+  "screen": "coringa-2048.webp",
+  "laser": "coringa-laser.webp",
+  "screenPx": [
+   2047,
+   955
+  ],
+  "laserPx": [
+   4456,
+   2078
+  ]
+ },
  "boiadeira": {
   "id": "boiadeira",
   "widthMm": 271.32,

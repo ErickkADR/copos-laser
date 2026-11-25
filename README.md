@@ -13,7 +13,7 @@ performance tratada como requisito, com cada otimização justificada por um nú
 > Gravura é uma marca inventada; nome e logo de marcas reais de copo não aparecem na página. O copo é um **modelo real de copo térmico de 40 oz**
 > (corpo largo em cima, parte de baixo estreita, alça retangular, tampa e canudo reto), fornecido pelo Erick em SketchUp e convertido por
 > `scripts/convert-dae.mjs`. Os elementos decorativos são **gerados por código** (`scripts/generate-models.mjs`).
-> Personagens com direitos autorais não fazem parte do site nem do repositório: o upload do visitante cobre esse caso de uso.
+> Atenção: Mulher-Maravilha, Homem de Ferro e Coringa são personagens com direitos autorais, incluídos a pedido do autor.
 
 ## O que a página faz
 

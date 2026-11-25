@@ -1,11 +1,8 @@
 // Entrada leve: estilos e seletor. Pinta a página sem esperar o 3D.
 // O 3D (model-viewer + three + GSAP) vem num chunk separado, importado depois da primeira pintura.
 import './styles/index.css';
-import { ARTS, addLocalArts } from './config/arts.js';
+import { ARTS } from './config/arts.js';
 import { createUI } from './modules/ui.js';
-
-// exemplos com direitos autorais: só existem em dev (public/locais fica fora do git e do deploy)
-if (import.meta.env.DEV) await addLocalArts();
 
 const ui = createUI();
 
