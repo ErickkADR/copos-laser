@@ -123,3 +123,6 @@ O README é a vitrine (decisões + números antes/depois). Ler o README antes de
 ## Ajuste da arte enviada (25/11/2026, pedido do Erick)
 - No estúdio, quem envia a arte ajusta para pegar os 360°: **encaixe** (`mode`: repeat / stretch / single), **tamanho** (`scale`), **posição vertical** (`offY`), **giro** (`shift`) e **limiar/inverter**. `uploadArt` (engrave.js) desenha tudo com 3 cópias (±volta) para o que passa de uma borda reaparecer na outra. A faixa do painel (`data-strip`) mostra a volta inteira planificada com a emenda nas pontas.
 - O **arquivo do laser usa o mesmo ajuste**: `renderLaser` chama `drawInk` com o `layer(w, h)` do upload no tamanho do arquivo (400 dpi), então o que o visitante vê é o que sai.
+
+## Skills para repetir o trabalho (25/11/2026)
+Skills globais em `~/claude-config/skills/` (viajam entre as máquinas): `modelo-3d-copo-lata` (modelar no Blender via MCP, medir foto, exportar, plugar no site), `rotulo-lata-magnific` (rótulos panorâmicos a partir de referências, upload, conferência, tema + miniatura) e `arte-gravacao-laser-copo` (SVG/PDF/pacote PNG -> máscara, 360°, arquivo da fibra). Invocar a skill antes de refazer qualquer um desses fluxos.
