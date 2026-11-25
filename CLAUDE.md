@@ -107,5 +107,5 @@ O README é a vitrine (decisões + números antes/depois). Ler o README antes de
 - **Fundo preto puro** (`#000`): sem degradê, sem imagem de ruído.
 - **Modelo inicial = copo térmico de 40 oz** (`MODELS.cup`; `?model=pint` abre na caneca).
 - **Nomes dos modelos:** "Copo Quencher" (`cup.glb`, o primeiro e o que abre por padrão) e "Caneca" (`pint.glb`). 
-- **Inclinação**: arrastar na vertical inclina o copo (`state.dragPitch`, de -30° a 80°; começa em 16° para a tampa aparecer); na horizontal gira os 360°. Arrastar para baixo mostra a tampa de cima.
+- **Giro (decisão final do Erick, 25/11)**: arrastar só gira na HORIZONTAL (360°, com inércia). **Nada de inclinação vertical**: o visitante NÃO pode ver a parte de cima do copo (a versão com `dragPitch` foi removida a pedido). A inclinação do cursor continua limitada a ±12° (`SETTINGS.tilt`).
 - **CORREÇÃO de nomes e ordem (25/11):** "Copo" = `pint.glb` (o copo térmico de 473 ml, **o primeiro, carrega ao entrar**) e "Copo Quencher" = `cup.glb` (40 oz, alça e canudo, **depois**). `?model=cup` abre direto no Quencher. (Antes eu tinha chamado o 40 oz de "Copo Quencher" e a caneca de "Caneca", mas o Erick quer o 473 ml como padrão.)

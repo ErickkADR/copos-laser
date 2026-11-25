@@ -6,10 +6,8 @@ import { createEngraver, loadImage } from './engrave.js';
 import { MODELS, useModel } from '../config/engrave.js';
 import { MODELS_BASE } from '../config/settings.js';
 
-const PITCH_SIGN = 1;
-
 export function createCup(el, { initialModel = 'pint', textureWidth, reducedMotion }) {
-  const state = { yaw: 0, pitch: 0, roll: 0, spin: 0, drag: 0, dragPitch: 16 }; // dragPitch: inclinação do visitante (graus). Começa levemente inclinado para a tampa aparecer. // drag = giro livre do visitante (graus, sem limite: 360° e mais)
+  const state = { yaw: 0, pitch: 0, roll: 0, spin: 0, drag: 0 }; // drag = giro livre do visitante na HORIZONTAL (graus, sem limite: 360° e mais). Sem inclinação vertical: o visitante não vê a parte de cima.
   let dragging = false;
   let vel = 0; // inércia do giro (graus por segundo)
   const blurNode = document.querySelector('[data-spin-blur]');
@@ -117,10 +115,10 @@ export function createCup(el, { initialModel = 'pint', textureWidth, reducedMoti
 
   // Arrastar em qualquer ponto livre do herói gira o copo 360° (e mais), com inércia.
   function enableDrag(zone) {
-    let lastX = 0, lastY = 0, lastT = 0;
+    let lastX = 0, lastT = 0;
     zone.addEventListener('pointerdown', (e) => {
       if (e.target.closest('button, a, input, label, .studio, .picker, .site-header')) return;
-      dragging = true; lastX = e.clientX; lastY = e.clientY; lastT = performance.now(); vel = 0;
+      dragging = true; lastX = e.clientX; lastT = performance.now(); vel = 0;
       zone.setPointerCapture(e.pointerId);
       zone.classList.add('is-grabbing');
     });
@@ -130,8 +128,7 @@ export function createCup(el, { initialModel = 'pint', textureWidth, reducedMoti
       const d = (e.clientX - lastX) * 0.45;
       state.drag += d;
       vel = 0.7 * vel + 0.3 * (d / (Math.max(1, now - lastT) / 1000));
-      state.dragPitch = Math.max(-30, Math.min(80, state.dragPitch + (e.clientY - lastY) * 0.35 * PITCH_SIGN)); // arrastar na vertical inclina o copo: dá para ver a tampa (e o fundo)
-      lastX = e.clientX; lastY = e.clientY; lastT = now;
+      lastX = e.clientX; lastT = now;
     });
     const up = () => { dragging = false; zone.classList.remove('is-grabbing'); vel = Math.max(-1600, Math.min(1600, vel)); };
     zone.addEventListener('pointerup', up);
@@ -146,7 +143,7 @@ export function createCup(el, { initialModel = 'pint', textureWidth, reducedMoti
     state.pitch += (src.ny * SETTINGS.tilt.pitch - state.pitch) * k;
     state.roll += (-src.nx * SETTINGS.tilt.roll - state.roll) * k;
 
-    const o = `${state.roll.toFixed(2)}deg ${(state.pitch + state.dragPitch).toFixed(2)}deg ${(state.yaw + state.spin + state.drag).toFixed(2)}deg`;
+    const o = `${state.roll.toFixed(2)}deg ${state.pitch.toFixed(2)}deg ${(state.yaw + state.spin + state.drag).toFixed(2)}deg`;
     if (o !== lastOrientation) {
       el.orientation = o;
       lastOrientation = o;
