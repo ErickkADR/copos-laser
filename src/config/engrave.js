@@ -11,7 +11,7 @@ export const MODELS = {
     // parte larga quase reta (raio 50,5 -> 52 mm) de z = 101 a 190,7 mm, degrau suave de 10 mm e base só ~10% mais estreita (raio 43 -> 46,7 mm) de z = 0 a 91 mm; faixa de aço de 10 mm;
     // tampa clara do MESMO diâmetro do corpo (19 mm); aba arredondada no centro com o canudo; alça de 80 mm de altura e 52 mm para fora.
     // Mapa = volta de 322 mm (raio no meio da arte). Arte de 78 mm (6 mm abaixo do topo), que se repete 2x na volta; texto de 24 mm na base (volta ~281 mm), esticado 1,15x.
-    file: 'cup.glb?v=7', name: 'Copo Quencher', cam: { desktop: 0.95, mobile: 1.0 },
+    file: 'cup.glb?v=8', name: 'Copo Quencher', cam: { desktop: 0.72, mobile: 0.8 },
     body: { w: 322, h: 190.7 }, art: { y: 6, h: 78 }, wrap: 322,
     name_: { on: true, y: 129, h: 24, maxW: 140, sx: 1.146 }, tintNames: ['Handle'],
   },
