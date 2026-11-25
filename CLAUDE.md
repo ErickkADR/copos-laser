@@ -98,3 +98,4 @@ O README é a vitrine (decisões + números antes/depois). Ler o README antes de
 - `cup.js` recarrega o `.glb` (`switchModel`), recria o motor de gravação e repinta a arte atual. `?model=pint` abre direto na caneca.
 - Para criar o `.glb` no Blender: materiais `Body` (com UV cilíndrico: u = ângulo, 0,5 de frente = -Y do Blender; v = altura só no corpo pintado), `Steel` e `Lid`; exportar com y-up. O `Body` tem que ser a ÚNICA peça com UV.
 - Caneca v2 (mesmo dia): maior e mais esguia, como na foto do Erick (190 mm de altura, corpo pintado de 131,5 mm, volta 251 mm, arte de 119 mm), tampa de **plástico preto** (material `Plastic`, não é sobrescrito pelo site) com aba de aço (`Lid`) e anel preto de borracha acima da base de aço. Câmera 0,6 m (desktop) / 0,72 m (celular).
+- Caneca v3: faixas de aço do topo e da base reduzidas pela metade (12 mm cada; antes 24); corpo pintado de 155,5 mm, arte de 143 mm de altura, altura total igual (190 mm).
