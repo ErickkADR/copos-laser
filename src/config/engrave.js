@@ -4,7 +4,7 @@
 // Cada modelo de copo tem a sua geometria. Os objetos abaixo são MUTÁVEIS e preenchidos por useModel(id): quem importa BODY_MM, ART_ZONE...
 // sempre vê o modelo atual. Medidas em mm, contadas do TOPO do corpo pintado.
 //  cup  (térmico 40 oz): corpo de 284 mm; arte na parte LARGA de cima (raio 65 mm = 408 mm de volta), texto na parte estreita de baixo.
-//  pint (caneca de cerveja térmica, feita no Blender): corpo pintado de 101,5 mm entre a faixa de aço do topo e o anel da base; volta média 254 mm.
+//  pint (caneca de cerveja térmica, feita no Blender): corpo pintado de 131,5 mm entre a faixa de aço do topo e o anel da base (190 mm de altura total); volta média 251 mm.
 export const MODELS = {
   cup: {
     file: 'cup.glb', name: 'Térmico 40 oz', cam: { desktop: 1.25, mobile: 1.3 },
@@ -12,8 +12,8 @@ export const MODELS = {
     name_: { on: true, y: 215, h: 28, maxW: 230, sx: 1 }, tintNames: ['Handle'],
   },
   pint: {
-    file: 'pint.glb', name: 'Caneca', cam: { desktop: 0.64, mobile: 0.72 },
-    body: { w: 254, h: 101.5 }, art: { y: 5, h: 91 }, wrap: 254,
+    file: 'pint.glb', name: 'Caneca', cam: { desktop: 0.6, mobile: 0.72 },
+    body: { w: 251, h: 131.5 }, art: { y: 6, h: 119 }, wrap: 251,
     name_: { on: false, y: 0, h: 0, maxW: 0, sx: 1 }, tintNames: [],
   },
 };
