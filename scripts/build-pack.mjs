@@ -1,6 +1,7 @@
 // Pacote de artes de fibra laser do Erick (PNG preto e branco, 1820 px) -> máscaras WebP lossless binárias em public/art/pack + manifesto.
 //   node scripts/build-pack.mjs <pasta com os PNG extraídos do zip>
-// Regra de gravação: o CLARO vira inox e o ESCURO fica preto (o que se vê no PNG é o que o copo mostra: papel branco = metal, traço preto = tinta).
+// Regra de gravação: arte de fundo ESCURO -> o claro vira inox. Arte de fundo CLARO (papel branco) -> o traço ESCURO vira inox: sai traço prateado sobre o
+// preto da pintura, em vez de um bloco prateado (que gastaria o copo todo e ficaria feio).
 // Fica de fora quem é pessoa do círculo do Erick (site público): ver EXCLUIR.
 import sharp from 'sharp';
 import { readdir, writeFile, mkdir } from 'node:fs/promises';
@@ -22,8 +23,11 @@ let total = 0;
 for (const f of (await readdir(dir)).filter((x) => x.endsWith('.png')).sort()) {
   if (EXCLUIR.test(f)) { console.log('fora:', f); continue; }
   const { data, info } = await sharp(dir + '/' + f).flatten({ background: '#000' }).greyscale().raw().toBuffer({ resolveWithObject: true });
-  const px = info.width * info.height, buf = Buffer.alloc(px * 4); // RGB preto, alfa = máscara (claro = grava)
-  for (let i = 0; i < px; i++) buf[i * 4 + 3] = data[i] >= 128 ? 255 : 0;
+  const px = info.width * info.height, buf = Buffer.alloc(px * 4); // RGB preto, alfa = máscara
+  let sum = 0; for (let i = 0; i < px; i += 7) sum += data[i];
+  const light = sum / Math.ceil(px / 7) > 118; // fundo claro: grava o escuro
+  if (light) console.log('fundo claro (grava o traço):', f);
+  for (let i = 0; i < px; i++) buf[i * 4 + 3] = (data[i] >= 128) !== light ? 255 : 0;
   const name = nice(f), id = slug(name);
   const webp = await sharp(buf, { raw: { width: info.width, height: info.height, channels: 4 } }).webp({ lossless: true, effort: 6 }).toBuffer();
   await writeFile(out + id + '.webp', webp);

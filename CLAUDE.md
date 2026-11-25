@@ -87,7 +87,7 @@ O README é a vitrine (decisões + números antes/depois). Ler o README antes de
 
 ## Pacote de artes de fibra laser (25/11/2026, pedido do Erick)
 - `~/Downloads/PACK FIBRA LASER.zip` (71 PNG preto e branco, ~1820 px). `node scripts/build-pack.mjs <pasta extraída>` gera `public/art/pack/*.webp` (máscara lossless binária, 3,5 MB no total) e `src/config/pack-manifest.json`; as artes entram em `ARTS` depois das 5 principais (Mulher-Maravilha continua a primeira). O ZIP **não** é versionado.
-- **Regra:** o CLARO vira inox, o ESCURO fica preto (papel branco = metal). `fit: 'contain'`: proporção preservada (altura cheia da faixa, largura em mm reais, centrada); o resto da volta fica pintado. Não esticar até 408 mm: as artes são 1,2 a 1,8:1 e deformaria rostos.
+- **Regra:** arte de fundo escuro: o CLARO vira inox. Arte de fundo CLARO (papel branco, detectado pela média de luminância > 118): o traço ESCURO vira inox (traço prateado sobre o preto; sem isso virava um bloco prateado). `fit: 'contain'` + **360°**: a arte se REPETE lado a lado até fechar a volta (n cópias, `engrave.js`), sem deformar (esticamento máx. 15%). Antes ficava centralizada com o resto preto.
 - **Fora de propósito:** LEANDRO, VICTOR e RICARDO (pessoas do círculo do Erick; site público). Há retratos de pessoas reais e muito IP (mangás, jogos) no pacote: risco assumido pelo Erick.
 - Resolução do laser: o PNG exportado reusa a máscara de ~1820 px, ou seja, ~170 dpi no tamanho real (as artes principais têm máscara própria de 400 dpi).
 - UI: seletor do herói é uma lista com rolagem (~73 itens); no estúdio a arte é um `<select>`. Só as 4 primeiras artes são pré-carregadas; as outras baixam ao escolher.
@@ -101,3 +101,10 @@ O README é a vitrine (decisões + números antes/depois). Ler o README antes de
 - Caneca v3: faixas de aço do topo e da base reduzidas pela metade (12 mm cada; antes 24); corpo pintado de 155,5 mm, arte de 143 mm de altura, altura total igual (190 mm).
 - **Cache de modelo:** `/models/*` agora é `max-age=0, must-revalidate` e o nome do arquivo leva `?v=N` (em `MODELS.file`). **Sempre incrementar o `v` ao trocar um .glb**, senão quem já abriu o site continua vendo o modelo antigo (aconteceu com a caneca em 25/11).
 - **Caneca v4 = medidas oficiais** (pedido do Erick, 25/11): Classic Stay-Chill Beer Pint 16 oz / 473 ml, **171 mm de altura x 95 mm de diâmetro máximo** (3,75" x 6,75"; fontes: Steep & Cheap e Williams-Sonoma; a well.ca lista 87 x 146 mm, de outra série). Conferido no Blender pela caixa envolvente. Corpo pintado 138,5 mm, volta média 237,5 mm, arte de 126 mm de altura. Modelo `?v=5`. O nome da marca continua fora do site.
+
+## 25/11/2026 (3): grade de miniaturas, fundo preto, 360 em tudo
+- **Grade à direita**: 2 colunas de quadrados (76 px) com a miniatura de cada arte (`public/art/thumb/*.webp`, 144 px, ~6 KB, gerados por `node scripts/build-thumbs.mjs` DEPOIS de `art:build` e `build-pack`); no celular vira uma faixa horizontal de quadrados. Sem texto (nome só em `aria-label`/`title`). "Sua arte" é o quadrado tracejado com "+".
+- **Fundo preto puro** (`#000`): sem degradê, sem imagem de ruído.
+- **Modelo inicial = copo térmico de 40 oz** (`MODELS.cup`; `?model=pint` abre na caneca).
+- **Nomes dos modelos:** "Copo Quencher" (`cup.glb`, o primeiro e o que abre por padrão) e "Caneca" (`pint.glb`). 
+- **Inclinação**: arrastar na vertical inclina o copo (`state.dragPitch`, de -30° a 80°; começa em 16° para a tampa aparecer); na horizontal gira os 360°. Arrastar para baixo mostra a tampa de cima.

@@ -36,9 +36,12 @@ export function drawInk(ctx, spec, s, layout = bodyLayout(), { laser = false } =
   if (art?.kind === 'mask' && (art.img || art.imgLaser)) {
     const im = (laser && art.imgLaser) || art.img;
     if (art.fit === 'contain') {
-      // proporção preservada: altura cheia da faixa, largura em mm reais (1 px do mapa na horizontal vale WRAP.mm / largura do mapa), centrada na volta
-      const hh = H, ww = Math.min(W, (H * art.aspect * W) / (WRAP.mm * s)) ;
-      ctx.drawImage(im, (W - ww) / 2, ay, ww, hh);
+      // 360°: a arte se REPETE lado a lado até fechar a volta, sem deformar. n = menor número de cópias em que cada cópia (volta / n de largura)
+      // cabe na altura da faixa (com até 15% de folga de esticamento); a altura fica centrada. As bordas dessas artes são fundo liso, então a emenda não aparece.
+      let n = 1;
+      while (n < 8 && WRAP.mm / n / art.aspect > ART_ZONE.h * 1.15) n++;
+      const tw = W / n, th = Math.min(H, (tw / art.aspect) * 1.15); // altura até 15% maior que a natural: preenche mais a faixa
+      for (let i = 0; i < n; i++) ctx.drawImage(im, i * tw, ay + (H - th) / 2, tw + 1, th);
     } else ctx.drawImage(im, 0, ay, W, H);
   } else if (art?.kind === 'upload' && art.layer) {
     ctx.drawImage(art.layer(Math.round(W), Math.round(H)), 0, ay);

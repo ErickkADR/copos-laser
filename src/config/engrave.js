@@ -7,7 +7,7 @@
 //  pint (caneca de cerveja térmica, feita no Blender): medidas OFICIAIS do Classic Stay-Chill Beer Pint 16 oz (473 ml): 171 mm de altura x 95 mm de diâmetro (3,75" x 6,75"); corpo pintado de 138,5 mm entre as faixas de aço de 12 mm; volta média 237,5 mm.
 export const MODELS = {
   cup: {
-    file: 'cup.glb?v=3', name: 'Térmico 40 oz', cam: { desktop: 1.25, mobile: 1.3 },
+    file: 'cup.glb?v=3', name: 'Copo Quencher', cam: { desktop: 1.25, mobile: 1.3 },
     body: { w: 298, h: 284 }, art: { y: 12, h: 154 }, wrap: 2 * Math.PI * 65,
     name_: { on: true, y: 215, h: 28, maxW: 230, sx: 1 }, tintNames: ['Handle'],
   },
