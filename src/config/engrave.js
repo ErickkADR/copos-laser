@@ -4,7 +4,7 @@
 // Cada modelo de copo tem a sua geometria. Os objetos abaixo são MUTÁVEIS e preenchidos por useModel(id): quem importa BODY_MM, ART_ZONE...
 // sempre vê o modelo atual. Medidas em mm, contadas do TOPO do corpo pintado.
 //  cup  (térmico 40 oz): corpo de 284 mm; arte na parte LARGA de cima (raio 65 mm = 408 mm de volta), texto na parte estreita de baixo.
-//  pint (caneca de cerveja térmica, feita no Blender): corpo pintado de 155,5 mm entre a faixa de aço do topo e o anel da base (190 mm de altura total); volta média 251 mm.
+//  pint (caneca de cerveja térmica, feita no Blender): medidas OFICIAIS do Classic Stay-Chill Beer Pint 16 oz (473 ml): 171 mm de altura x 95 mm de diâmetro (3,75" x 6,75"); corpo pintado de 138,5 mm entre as faixas de aço de 12 mm; volta média 237,5 mm.
 export const MODELS = {
   cup: {
     file: 'cup.glb?v=3', name: 'Térmico 40 oz', cam: { desktop: 1.25, mobile: 1.3 },
@@ -12,8 +12,8 @@ export const MODELS = {
     name_: { on: true, y: 215, h: 28, maxW: 230, sx: 1 }, tintNames: ['Handle'],
   },
   pint: {
-    file: 'pint.glb?v=4', name: 'Caneca', cam: { desktop: 0.6, mobile: 0.72 },
-    body: { w: 251, h: 155.5 }, art: { y: 6, h: 143 }, wrap: 251,
+    file: 'pint.glb?v=5', name: 'Caneca', cam: { desktop: 0.54, mobile: 0.66 },
+    body: { w: 237.5, h: 138.5 }, art: { y: 6, h: 126 }, wrap: 237.5,
     name_: { on: false, y: 0, h: 0, maxW: 0, sx: 1 }, tintNames: [],
   },
 };
