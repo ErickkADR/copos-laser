@@ -1,9 +1,9 @@
-// Troca de arte coreografada com GSAP: o copo gira 720° com motion blur, o nome da arte sai e volta, e a gravação
+// Troca de arte coreografada com GSAP: o copo gira 720° com motion blur, a gravação
 // troca no pico do giro (meio de um power2.inOut = velocidade máxima, blur máximo). O fundo é sempre o mesmo preto.
 import { gsap } from 'gsap';
 import { SETTINGS } from '../config/settings.js';
 
-export function createThemeSwitcher({ cup, ui, reducedMotion }) {
+export function createThemeSwitcher({ cup, reducedMotion }) {
   let current = null;
   let running = null;
   let pending = null;
@@ -11,7 +11,6 @@ export function createThemeSwitcher({ cup, ui, reducedMotion }) {
   // primeira pintura: sem animação
   async function init(theme) {
     current = theme;
-    ui.setTexts(theme);
     await cup.first(theme);
   }
 
@@ -21,16 +20,12 @@ export function createThemeSwitcher({ cup, ui, reducedMotion }) {
     current = theme;
 
     if (reducedMotion) {
-      ui.setTexts(theme);
       cup.swap(prepared);
       return;
     }
 
     const dur = SETTINGS.spin.duration;
     const tl = gsap.timeline();
-    tl.to(ui.texts, { yPercent: -40, opacity: 0, duration: 0.3, ease: 'power2.in' }, 0);
-    tl.call(() => ui.setTexts(theme), null, 0.36);
-    tl.fromTo(ui.texts, { yPercent: 40, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.55, ease: 'power3.out' }, 0.4);
     tl.to(cup.state, { spin: `+=${SETTINGS.spin.degrees}`, duration: dur, ease: 'power2.inOut' }, 0);
     tl.call(() => cup.swap(prepared), null, dur / 2);
     tl.call(() => { cup.state.spin %= 360; }, null, dur + 0.01);

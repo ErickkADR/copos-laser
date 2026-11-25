@@ -4,7 +4,7 @@
 // Saem três mapas do mesmo canvas de máscara: baseColor, metallicRoughness (G = rugosidade, B = metal) e um normal leve (a tinta
 // tem espessura: a borda da gravação pega luz). Os mapas são escritos de cabeça para baixo de propósito: o CanvasTexture do
 // three tem flipY = true e o glTF espera a origem no topo.
-import { ART_ZONE, ART_W, NAME_ZONE, BODY_MM, EXPORT_ZONE, STEEL, ROUGH, textureSize } from '../config/engrave.js';
+import { ART_ZONE, ART_W, ART_SX, NAME_ZONE, BODY_MM, EXPORT_ZONE, STEEL, ROUGH, textureSize } from '../config/engrave.js';
 import { PROCEDURAL } from './procedural.js';
 
 export const FONT = '"Archivo Variable", "Archivo", system-ui, sans-serif';
@@ -27,12 +27,15 @@ export function loadImage(url) {
 // ---------- 1. a tinta: tudo que será gravado, em preto sobre transparente ----------
 // `s` = px por mm. layout = onde cai cada coisa (mm, a partir do topo do canvas):
 //   corpo (padrão): arte em ART_ZONE.y, nome comprimido na parte larga; arquivo do laser: arte em 0 e nome logo abaixo, sem compressão.
-const BODY_LAYOUT = { w: BODY_MM.w, artY: ART_ZONE.y, nameCy: NAME_ZONE.y + NAME_ZONE.h / 2, nameSx: NAME_ZONE.sx };
-const LASER_LAYOUT = { w: EXPORT_ZONE.w, artY: 0, nameCy: EXPORT_ZONE.nameY + NAME_ZONE.h / 2, nameSx: 1 };
+const BODY_LAYOUT = { w: BODY_MM.w, artY: ART_ZONE.y, artSx: ART_SX, nameCy: NAME_ZONE.y + NAME_ZONE.h / 2, nameSx: NAME_ZONE.sx };
+const LASER_LAYOUT = { w: EXPORT_ZONE.w, artY: 0, artSx: 1, nameCy: EXPORT_ZONE.nameY + NAME_ZONE.h / 2, nameSx: 1 };
 
 export function drawInk(ctx, spec, s, layout = BODY_LAYOUT, { laser = false } = {}) {
   const art = spec.art;
   const ay = layout.artY * s;
+  ctx.save();
+  // compressão horizontal da arte em torno do centro (parte larga do copo)
+  ctx.translate((layout.w * s) / 2, 0); ctx.scale(layout.artSx, 1); ctx.translate(-(layout.w * s) / 2, 0);
   if (art?.kind === 'mask' && (art.img || art.imgLaser)) {
     // medidas físicas: a arte pronta mantém os mm do arquivo, centrada na volta
     const w = art.widthMm * s, h = art.heightMm * s;
@@ -43,6 +46,7 @@ export function drawInk(ctx, spec, s, layout = BODY_LAYOUT, { laser = false } = 
     const w = Math.round(ART_W * s), h = Math.round(ART_ZONE.h * s);
     ctx.drawImage(art.layer(w, h), (layout.w * s - w) / 2, ay);
   }
+  ctx.restore();
   if (spec.text?.trim()) drawName(ctx, spec.text.trim(), s, layout);
 }
 

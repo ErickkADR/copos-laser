@@ -68,4 +68,13 @@ O README é a vitrine (decisões + números antes/depois). Ler o README antes de
   removidos (histórico do git). `text` e `paint` continuam nos temas (nome vazio, preto) porque `engrave.js` ainda os suporta.
 - As seções acima que falam de nome na parte larga, cor da pintura na alça/tampa e elementos descrevem o que o código ainda suporta; a UI não expõe mais.
 - Hero com `height: 100vh` exato (sem altura mínima).
-- Fundo do herói: `public/img/bg-960.webp` e `bg-1920.webp` (parede escura de estúdio, 2 e 7 KB), em um `<img>` com `srcset`; é o mesmo arquivo do `latinhas-3d`. Original: `~/Downloads/dark-plain-gray-wall-product-background.jpg`. A outra imagem que o Erick mandou (concreto grunge preto) não está em uso.
+
+
+## v3 (25/11/2026, pedido do Erick)
+- **Só o herói**: sem seções abaixo, menu, rodapé nem cards (removidos `menu.js`, `sections.css`, imagens dos cards). A página não rola (`overflow: hidden`).
+- **Giro livre de 360°**: `cup.enableDrag(hero)` (pointer events, inércia). `state.drag` é aditivo ao tilt do cursor e ao giro do GSAP. `touch-action: none` no herói (o seletor tem `pan-x`).
+- **Canvas do copo = herói inteiro** (`.cup { width/height: 100% }`): o modelo gira sem ser cortado. Para a distância da câmera valer, o `<model-viewer>` precisa de `max-camera-orbit="auto auto 4m"`
+  (o auto limita o raio ao enquadramento). Distância: 1,25 m no desktop, 1,3 m no celular (`scene.js`).
+- **Fundo em CSS** (`hero.css`): degradê radial + brilho de chão + `public/img/noise.png` (128 px, opacidade 3,5%) para quebrar as faixas. A imagem de parede que o Erick mandou ficou pixelada
+  (2 KB/7 KB em WebP de um JPG de 6000 px) e foi descartada; o `latinhas-3d` usa o mesmo CSS.
+- **Layout do copo invertido**: arte na parte LARGA (`ART_ZONE.y = 14`, comprimida por `ART_SX`), texto na parte ESTREITA (`NAME_ZONE.y = 215`). `text` de cada arte pronta começa com o nome dela; o estúdio tem um campo "Texto gravado".

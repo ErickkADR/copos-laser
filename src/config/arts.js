@@ -11,7 +11,7 @@ export const ARTS = [
   { id: 'poker', name: 'Poker', art: mask('poker') },
   { id: 'mandala', name: 'Mandala', art: { kind: 'proc', draw: 'mandala' } },
   { id: 'constelacao', name: 'Constelação', art: { kind: 'proc', draw: 'constelacao' } },
-].map((a) => ({ ...a, text: '', paint: DEFAULT_PAINT }));
+].map((a) => ({ ...a, text: a.name, paint: DEFAULT_PAINT })); // o texto gravado na parte de baixo começa com o nome da arte
 
 export const CUSTOM_BASE = { id: 'custom', name: 'Sua gravação' };
 
@@ -20,7 +20,7 @@ export async function addLocalArts() {
   try {
     const list = await (await fetch('/locais/index.json')).json();
     list.forEach((e) => {
-      ARTS.push({ id: e.id, name: e.id.replace(/-/g, ' '), local: true, text: '', paint: DEFAULT_PAINT,
+      ARTS.push({ id: e.id, name: e.id.replace(/-/g, ' '), local: true, text: e.id.replace(/-/g, ' '), paint: DEFAULT_PAINT,
         art: { kind: 'mask', url: `/locais/${e.screen}`, laserUrl: `/locais/${e.laser}`, widthMm: e.widthMm, heightMm: e.heightMm } });
     });
   } catch { /* sem a pasta local: segue só com as artes públicas */ }

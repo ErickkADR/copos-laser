@@ -5,7 +5,9 @@ import { pointer, idleSway } from './pointer.js';
 import { createEngraver, loadImage } from './engrave.js';
 
 export function createCup(el, { src, textureWidth, reducedMotion }) {
-  const state = { yaw: 0, pitch: 0, roll: 0, spin: 0 };
+  const state = { yaw: 0, pitch: 0, roll: 0, spin: 0, drag: 0 }; // drag = giro livre do visitante (graus, sem limite: 360° e mais)
+  let dragging = false;
+  let vel = 0; // inércia do giro (graus por segundo)
   const blurNode = document.querySelector('[data-spin-blur]');
   const engraver = createEngraver(textureWidth);
   let body = null;
@@ -87,14 +89,37 @@ export function createCup(el, { src, textureWidth, reducedMotion }) {
     paintParts(spec.paint);
   }
 
+  // Arrastar em qualquer ponto livre do herói gira o copo 360° (e mais), com inércia.
+  function enableDrag(zone) {
+    let lastX = 0, lastT = 0;
+    zone.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('button, a, input, label, .studio, .picker, .site-header')) return;
+      dragging = true; lastX = e.clientX; lastT = performance.now(); vel = 0;
+      zone.setPointerCapture(e.pointerId);
+      zone.classList.add('is-grabbing');
+    });
+    zone.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const now = performance.now();
+      const d = (e.clientX - lastX) * 0.45;
+      state.drag += d;
+      vel = 0.7 * vel + 0.3 * (d / (Math.max(1, now - lastT) / 1000));
+      lastX = e.clientX; lastT = now;
+    });
+    const up = () => { dragging = false; zone.classList.remove('is-grabbing'); vel = Math.max(-1600, Math.min(1600, vel)); };
+    zone.addEventListener('pointerup', up);
+    zone.addEventListener('pointercancel', up);
+  }
+
   function tick(dt, now) {
+    if (!dragging && vel) { state.drag += vel * dt; vel *= Math.pow(0.03, dt); if (Math.abs(vel) < 2) vel = 0; }
     const src = pointer.active ? pointer : idleSway(now);
     const k = 1 - Math.pow(1 - SETTINGS.tilt.ease, dt * 60);
     state.yaw += (src.nx * SETTINGS.tilt.yaw - state.yaw) * k;
     state.pitch += (src.ny * SETTINGS.tilt.pitch - state.pitch) * k;
     state.roll += (-src.nx * SETTINGS.tilt.roll - state.roll) * k;
 
-    const o = `${state.roll.toFixed(2)}deg ${state.pitch.toFixed(2)}deg ${(state.yaw + state.spin).toFixed(2)}deg`;
+    const o = `${state.roll.toFixed(2)}deg ${state.pitch.toFixed(2)}deg ${(state.yaw + state.spin + state.drag).toFixed(2)}deg`;
     if (o !== lastOrientation) {
       el.orientation = o;
       lastOrientation = o;
@@ -114,5 +139,5 @@ export function createCup(el, { src, textureWidth, reducedMotion }) {
     }
   }
 
-  return { el, state, loaded, tick, prepare, swap, paintLive, first, engraver };
+  return { el, state, loaded, tick, enableDrag, prepare, swap, paintLive, first, engraver };
 }

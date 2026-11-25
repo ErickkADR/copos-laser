@@ -27,6 +27,11 @@ performance tratada como requisito, com cada otimização justificada por um nú
 - **Copo real, gravação no lugar certo**: a arte de 283 × 126 mm cai na parte estreita do copo (onde a volta tem ~283 a 314 mm, a medida para a qual a arte foi feita).
 - **Responsivo de verdade**: no celular o menu é próprio (painel em tela cheia, foco preso, Esc fecha), o estúdio vira uma folha inferior e a textura de gravação usa 1024 px em vez de 2048.
 
+> **v3 (25/11/2026):** a página é só o herói animado (sem seções abaixo, sem menu, sem rodapé). **Giro livre de 360°**: arrastar em qualquer ponto livre gira o copo (com inércia).
+> O canvas do copo ocupa o herói inteiro, então nada é cortado em nenhum ângulo. Texto à esquerda e temas à direita, centralizados na vertical. **Copo invertido:** a arte vai na parte larga
+> de cima (comprimida na horizontal para manter a proporção real) e o texto gravado na parte estreita de baixo (começa com o nome da arte; o estúdio edita). O fundo agora é
+> **CSS puro** (degradê + ladrilho de ruído de 24 KB como dithering), sem imagem para pixelar. Lighthouse local (mediana de 3): **100 · 100 · 100 · 100** no celular (TBT 69 ms, 0,56 MB) e no desktop (TBT 4 ms).
+>
 > **v2 (24/11/2026):** copo real no lugar do gerado por código; sem os elementos 3D decorativos, faíscas, nome e cor da pintura; fundo preto fixo.
 > Números da v2 (mediana de 3, Lighthouse 13.6, local): celular **92 · 100 · 100 · 100** (TBT 356 ms, 0,60 MB), desktop **100 · 100 · 100 · 100** (TBT 45 ms, 0,56 MB). Com o mouse
 > mexendo: **0 recálculos de estilo/s** no desktop (7 no celular) e **4,1%** da thread principal no desktop (4,8% no celular), contra 36% na v0. Só `cup.glb` (51 KB) vai

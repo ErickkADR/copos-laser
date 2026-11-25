@@ -26,12 +26,15 @@ export async function startScene({ ui, initial }) {
 
   const cupEl = document.querySelector('[data-cup]');
   cupEl.setAttribute('environment-image', ENV_FAST);
+  // celular: mais longe, para o copo não subir sobre o texto
+  cupEl.setAttribute('camera-orbit', `0deg 84deg ${window.innerWidth <= 860 ? '1.3m' : '1.25m'}`);
   const cup = createCup(cupEl, {
     src: `${MODELS_BASE}cup.glb`,
     textureWidth: device === 'mobile' ? SETTINGS.texture.mobile : SETTINGS.texture.desktop,
     reducedMotion,
   });
-  const switcher = createThemeSwitcher({ cup, ui, reducedMotion });
+  cup.enableDrag(hero);
+  const switcher = createThemeSwitcher({ cup, reducedMotion });
   const studio = initStudio({ switcher, cup, onSelectCustom: () => ui.setActive('custom') });
 
   // herói fora da tela = loop parado (nada de renderizar 3D que ninguém vê)

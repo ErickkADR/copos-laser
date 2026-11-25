@@ -1,4 +1,4 @@
-// Estúdio "Sua arte": só a arte (pronta ou enviada, com limiar e inverter) e o download do arquivo do laser.
+// Estúdio "Sua arte": arte (pronta ou enviada, com limiar e inverter), o texto da parte de baixo e o download do arquivo do laser.
 // Enquanto o tema atual é o personalizado, cada mudança recompõe a gravação e aplica no copo na hora (sem giro).
 // "Girar o copo" roda a coreografia. O arquivo nunca sai do navegador.
 import { ARTS, CUSTOM_BASE } from '../config/arts.js';
@@ -15,21 +15,23 @@ export function initStudio({ switcher, cup, onSelectCustom }) {
   const tools = form.querySelector('[data-upload-tools]');
   const hint = form.querySelector('[data-upload-hint]');
   const out = form.querySelector('[data-threshold-out]');
+  const textInput = form.querySelector('[data-field-text]');
   const chipsBox = form.querySelector('[data-art-chips]');
   const dlBtn = form.querySelector('[data-download-laser]');
   const dlHint = form.querySelector('[data-download-hint]');
   const HINT_DEFAULT = 'SVG, PNG, JPG ou WebP. Fica no seu navegador, nada é enviado.';
-  const state = { art: ARTS[0].id, up: null, upArt: null, threshold: 0.5, invert: false };
+  const state = { art: ARTS[0].id, text: ARTS[0].name, textEdited: false, up: null, upArt: null, threshold: 0.5, invert: false };
   let opener = null;
   let live = 0;
 
+  textInput.value = state.text;
   chipsBox.innerHTML = ARTS.map((a, i) => `<label class="chip"><input type="radio" name="art" value="${a.id}" ${i === 0 ? 'checked' : ''}/><span>${a.name}</span></label>`).join('');
 
   const isCustom = () => switcher.current?.id === 'custom';
 
   function theme() {
     const ready = ARTS.find((a) => a.id === state.art);
-    return { ...CUSTOM_BASE, art: state.art === 'upload' ? state.upArt : ready.art, text: '', paint: DEFAULT_PAINT, custom: true };
+    return { ...CUSTOM_BASE, art: state.art === 'upload' ? state.upArt : ready.art, text: state.text, paint: DEFAULT_PAINT, custom: true };
   }
 
   function refresh() {
@@ -42,7 +44,11 @@ export function initStudio({ switcher, cup, onSelectCustom }) {
 
   form.addEventListener('input', (e) => {
     const t = e.target;
-    if (t.name === 'art') { state.art = t.value; tools.hidden = true; }
+    if (t.name === 'text') { state.text = t.value; state.textEdited = true; }
+    if (t.name === 'art') {
+      state.art = t.value; tools.hidden = true;
+      if (!state.textEdited) { state.text = ARTS.find((a) => a.id === t.value)?.name ?? ''; textInput.value = state.text; } // o texto acompanha o nome da arte até o visitante mexer nele
+    }
     if (t.name === 'threshold') { state.threshold = t.value / 100; out.textContent = t.value; rebuildUpload(); }
     if (t.name === 'invert') { state.invert = t.checked; rebuildUpload(); }
     refresh();
@@ -111,11 +117,11 @@ export function initStudio({ switcher, cup, onSelectCustom }) {
         state.art = cur.id;
         form.querySelector(`input[name="art"][value="${cur.id}"]`).checked = true;
       }
+      if (!state.textEdited) { state.text = cur?.text ?? state.text; textInput.value = state.text; }
       switcher.go(theme());
       onSelectCustom?.();
     }
-    document.getElementById('topo').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setTimeout(() => form.querySelector('input[name="art"]:checked, [data-field-file]')?.focus({ preventScroll: true }), 50);
+    setTimeout(() => textInput.focus({ preventScroll: true }), 50);
   }
 
   function close() {

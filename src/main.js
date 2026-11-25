@@ -1,15 +1,13 @@
-// Entrada leve: estilos, menu, seletor, cards e textos. Pinta a página sem esperar o 3D.
+// Entrada leve: estilos e seletor. Pinta a página sem esperar o 3D.
 // O 3D (model-viewer + three + GSAP) vem num chunk separado, importado depois da primeira pintura.
 import './styles/index.css';
 import { ARTS, addLocalArts } from './config/arts.js';
-import { initMenu } from './modules/menu.js';
 import { createUI } from './modules/ui.js';
 
 // exemplos com direitos autorais: só existem em dev (public/locais fica fora do git e do deploy)
 if (import.meta.env.DEV) await addLocalArts();
 
-const ui = createUI({ imgBase: '/img/', imgExt: 'webp' });
-initMenu();
+const ui = createUI();
 
 // Enquanto o 3D não chegou, cliques ficam guardados e são repassados quando a cena estiver pronta.
 const early = [];
@@ -19,11 +17,6 @@ const send = (action) => (scene ? scene.handle(action) : early.push(action));
 ui.onPick((id, btn) => {
   ui.setActive(id);
   send(id === 'custom' ? { type: 'studio', trigger: btn } : { type: 'theme', id });
-});
-ui.onCard((id) => {
-  ui.setActive(id);
-  document.getElementById('topo').scrollIntoView({ behavior: 'smooth' });
-  send({ type: 'theme', id });
 });
 document.addEventListener('click', (e) => {
   const t = e.target.closest('[data-open-studio]');

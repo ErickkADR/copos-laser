@@ -19,49 +19,27 @@
     <link rel="preload" href="/art/boiadeira-2048.webp" as="image" type="image/webp" fetchpriority="low" />
   </head>
   <body>
-    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
-
     <header class="site-header" data-header>
-      <a class="brand" href="#topo" aria-label="Gravura, início">
+      <a class="brand" href="/" aria-label="Gravura, início">
         <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 4h18l-3 24H10z" fill="currentColor"/><path d="M12 11l4 4 4-4M12 17l4 4 4-4" fill="none" stroke="var(--bg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span>gravura</span>
       </a>
-      <nav class="nav" aria-label="Principal">
-        <ul class="nav-list">
-          <li><a href="#artes">Artes</a></li>
-          <li><a href="#como-funciona">Como funciona</a></li>
-          <li><a href="#bastidores">Bastidores</a></li>
-        </ul>
-      </nav>
-      <button class="btn btn--solid header-cta" type="button" data-open-studio>Personalizar</button>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-mobile" data-menu-toggle>
-        <span class="menu-toggle-bars" aria-hidden="true"></span>
-        <span class="sr-only">Abrir menu</span>
-      </button>
+      <button class="btn btn--solid header-cta" type="button" data-open-studio>Enviar a minha arte</button>
     </header>
-
-    <div class="menu-mobile" id="menu-mobile" data-menu hidden>
-      <nav aria-label="Menu do celular">
-        <ul>
-          <li><a href="#artes" data-menu-link>Artes</a></li>
-          <li><a href="#como-funciona" data-menu-link>Como funciona</a></li>
-          <li><a href="#bastidores" data-menu-link>Bastidores</a></li>
-        </ul>
-        <button class="btn btn--solid" type="button" data-open-studio data-menu-link>Personalizar o meu copo</button>
-      </nav>
-    </div>
 
     <main id="conteudo">
       <section class="hero" id="topo" aria-labelledby="hero-title" data-hero>
-        <div class="hero-bg" aria-hidden="true"><img src="/img/bg-1920.webp" srcset="/img/bg-960.webp 960w, /img/bg-1920.webp 1920w" sizes="100vw" width="1920" height="1280" alt="" decoding="async" /></div>
+        <div class="hero-bg" aria-hidden="true"></div>
 
         <div class="cup-stage">
           <model-viewer
             class="cup"
             data-cup
             alt="Copo térmico preto em 3D com a arte escolhida gravada a laser, mostrando o inox por baixo da tinta"
-            camera-orbit="0deg 84deg 1.1m"
+            camera-orbit="0deg 84deg 1.25m"
             field-of-view="26deg"
+            min-camera-orbit="auto auto 0.5m"
+            max-camera-orbit="auto auto 4m"
             environment-image="neutral"
             tone-mapping="neutral"
             exposure="1.2"
@@ -79,14 +57,6 @@
           <p class="eyebrow">Copos térmicos gravados a fibra laser</p>
           <h1 id="hero-title">A tinta sai, <br />o inox aparece.</h1>
           <p class="hero-lede">Preto fosco por fora, aço escovado por baixo. Escolha a arte e veja a gravação no copo 3D.</p>
-          <div class="hero-actions">
-            <button class="btn btn--solid" type="button" data-open-studio>Criar o meu</button>
-            <a class="btn btn--ghost" href="#artes">Ver artes</a>
-          </div>
-        </div>
-
-        <div class="art-info" aria-live="polite">
-          <p class="art-name" data-art-name>Boiadeira</p>
         </div>
 
         <div class="picker" role="radiogroup" aria-label="Arte do copo" data-picker></div>
@@ -114,54 +84,18 @@
             </div>
             <p class="field-hint" data-upload-hint>SVG, PNG, JPG ou WebP. Fica no seu navegador, nada é enviado.</p>
           </fieldset>
+          <label class="field">
+            <span class="field-label">Texto gravado</span>
+            <input type="text" name="text" maxlength="22" autocomplete="off" data-field-text />
+          </label>
           <div class="studio-actions">
             <button class="btn btn--solid" type="submit">Girar o copo</button>
             <button class="btn btn--line" type="button" data-download-laser>Baixar a arte para o laser</button>
-            <p class="field-hint" data-download-hint>PNG preto e branco, 283 × 160 mm a 400 dpi. Preto = gravado.</p>
+            <p class="field-hint" data-download-hint>PNG preto e branco, 283 × 160 mm a 400 dpi: arte em cima, texto embaixo. Preto = gravado.</p>
           </div>
         </form>
       </aside>
-
-      <section class="section arts" id="artes" aria-labelledby="artes-title">
-        <div class="section-head">
-          <p class="eyebrow">Artes prontas</p>
-          <h2 id="artes-title">Quatro gravações para começar</h2>
-          <p>Cada arte dá a volta no copo e pode ser baixada pronta para a fibra.</p>
-        </div>
-        <ul class="cards" data-cards></ul>
-      </section>
-
-      <section class="section how" id="como-funciona" aria-labelledby="como-title">
-        <div class="section-head">
-          <p class="eyebrow">Como funciona</p>
-          <h2 id="como-title">Da arte ao arquivo da fibra em três passos</h2>
-        </div>
-        <ol class="steps">
-          <li><span class="step-n" aria-hidden="true">1</span><h3>Escolha ou envie a arte</h3><p>Uma das prontas, ou o seu SVG/PNG: a imagem vira uma máscara por limiar de luminância, com opção de inverter.</p></li>
-          <li><span class="step-n" aria-hidden="true">2</span><h3>A tinta sai, o inox aparece</h3><p>Onde a máscara vale 1, o copo ganha metal prateado e escovado. Onde vale 0, fica o preto fosco. A textura nasce num canvas, na hora.</p></li>
-          <li><span class="step-n" aria-hidden="true">3</span><h3>Baixe o arquivo do laser</h3><p>PNG preto e branco no tamanho real da volta do copo (283 × 160 mm, 400 dpi), com o DPI gravado no arquivo.</p></li>
-        </ol>
-        <button class="btn btn--solid" type="button" data-open-studio>Abrir o estúdio</button>
-      </section>
-
-      <section class="section backstage" id="bastidores" aria-labelledby="bastidores-title">
-        <div class="section-head">
-          <p class="eyebrow">Bastidores</p>
-          <h2 id="bastidores-title">Bonito e leve não são opostos</h2>
-          <p>Esta página é um estudo de interação e performance. Cada otimização veio de um número medido, não de achismo.</p>
-        </div>
-        <dl class="stats">
-          <div><dt>Peso dos modelos 3D</dt><dd>159 KB <small>a primeira versão tinha 18,2 MB. Pipeline gltf-transform: Meshopt, simplificação e texturas WebP.</small></dd></div>
-          <div><dt>Peso da página</dt><dd>0,74 MB <small>eram 22,3 MB. Thread principal ocupada com o mouse mexendo: de 36% para 14%.</small></dd></div>
-          <div><dt>Lighthouse (A11y · BP · SEO)</dt><dd>100 · 100 · 100 <small>Performance também em 99 a 100 (era 76 no celular), medido com o Lighthouse.</small></dd></div>
-        </dl>
-      </section>
     </main>
-
-    <footer class="site-footer">
-      <p>Gravura é uma marca fictícia, criada como estudo de front-end 3D. Nenhuma marca real de copo foi usada.</p>
-      <p><a href="https://github.com/ErickkADR/copos-laser">Código no GitHub</a> · feito por Erick Dantas</p>
-    </footer>
 
     <svg class="sr-only" aria-hidden="true" focusable="false">
       <filter id="spin-blur" x="-30%" y="-5%" width="160%" height="110%" color-interpolation-filters="sRGB">
