@@ -7,11 +7,12 @@
 //  pint (caneca de cerveja térmica, feita no Blender): medidas OFICIAIS do Classic Stay-Chill Beer Pint 16 oz (473 ml): 171 mm de altura x 95 mm de diâmetro (3,75" x 6,75"); corpo pintado de 138,5 mm entre as faixas de aço de 12 mm; volta média 237,5 mm.
 export const MODELS = {
   cup: {
-    // Copo Quencher 30 oz / 887 ml feito no Blender (assets-src/quencher.blend): 274 mm de altura total (com canudo), boca de ~100 mm, corpo pintado de 215 mm, cônico (raio 31,5 -> 48,5 mm).
-    // Mapa = volta de 265 mm (raio no meio da arte, z = 138 mm). Arte de 130 mm de altura, 12 mm abaixo do topo; o texto fica perto da base, onde a volta é ~214 mm, então é esticado 1,235x.
-    file: 'cup.glb?v=4', name: 'Copo Quencher', cam: { desktop: 0.95, mobile: 1.0 },
-    body: { w: 265, h: 215 }, art: { y: 12, h: 130 }, wrap: 265,
-    name_: { on: true, y: 162, h: 26, maxW: 150, sx: 1.235 }, tintNames: ['Handle'],
+    // Copo Quencher 30 oz / 887 ml feito no Blender (assets-src/quencher.blend), seguindo a foto de referência do Erick: corpo largo e quase reto em cima (raio 45,2 -> 48,5 mm),
+    // degrau em z = 80 mm e base mais estreita (35% da altura; raio ~31,5 -> 36,2 mm), faixa fina de aço sob a tampa clara, alça retangular grossa. 274 mm de altura total (com canudo), corpo pintado de 215 mm.
+    // Mapa = volta de 294 mm (raio no meio da arte). Arte de 112 mm, 14 mm abaixo do topo (só na parte larga); o texto fica na base estreita (volta ~227 mm), esticado 1,30x.
+    file: 'cup.glb?v=6', name: 'Copo Quencher', cam: { desktop: 0.95, mobile: 1.0 },
+    body: { w: 294, h: 215 }, art: { y: 14, h: 112 }, wrap: 294,
+    name_: { on: true, y: 157, h: 26, maxW: 150, sx: 1.30 }, tintNames: ['Handle'],
   },
   pint: {
     file: 'pint.glb?v=7', name: 'Copo', cam: { desktop: 0.54, mobile: 0.66 },
