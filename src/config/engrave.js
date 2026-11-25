@@ -7,12 +7,12 @@
 //  pint (caneca de cerveja térmica, feita no Blender): corpo pintado de 155,5 mm entre a faixa de aço do topo e o anel da base (190 mm de altura total); volta média 251 mm.
 export const MODELS = {
   cup: {
-    file: 'cup.glb', name: 'Térmico 40 oz', cam: { desktop: 1.25, mobile: 1.3 },
+    file: 'cup.glb?v=3', name: 'Térmico 40 oz', cam: { desktop: 1.25, mobile: 1.3 },
     body: { w: 298, h: 284 }, art: { y: 12, h: 154 }, wrap: 2 * Math.PI * 65,
     name_: { on: true, y: 215, h: 28, maxW: 230, sx: 1 }, tintNames: ['Handle'],
   },
   pint: {
-    file: 'pint.glb', name: 'Caneca', cam: { desktop: 0.6, mobile: 0.72 },
+    file: 'pint.glb?v=4', name: 'Caneca', cam: { desktop: 0.6, mobile: 0.72 },
     body: { w: 251, h: 155.5 }, art: { y: 6, h: 143 }, wrap: 251,
     name_: { on: false, y: 0, h: 0, maxW: 0, sx: 1 }, tintNames: [],
   },
