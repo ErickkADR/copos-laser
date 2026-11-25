@@ -27,6 +27,8 @@ performance tratada como requisito, com cada otimização justificada por um nú
 - **Copo real, gravação no lugar certo**: a arte de 283 × 126 mm cai na parte estreita do copo (onde a volta tem ~283 a 314 mm, a medida para a qual a arte foi feita).
 - **Responsivo de verdade**: no celular o menu é próprio (painel em tela cheia, foco preso, Esc fecha), o estúdio vira uma folha inferior e a textura de gravação usa 1024 px em vez de 2048.
 
+> **360° (25/11/2026):** a arte dá a volta inteira do copo (408 × 154 mm); o arquivo do laser sai com 408 × 188 mm a 400 dpi.
+>
 > **v3 (25/11/2026):** a página é só o herói animado (sem seções abaixo, sem menu, sem rodapé). **Giro livre de 360°**: arrastar em qualquer ponto livre gira o copo (com inércia).
 > O canvas do copo ocupa o herói inteiro, então nada é cortado em nenhum ângulo. Texto à esquerda e temas à direita, centralizados na vertical. **Copo invertido:** a arte vai na parte larga
 > de cima (comprimida na horizontal para manter a proporção real) e o texto gravado na parte estreita de baixo (começa com o nome da arte; o estúdio edita). O fundo agora é

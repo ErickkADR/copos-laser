@@ -1,4 +1,4 @@
-// Grava o DPI no PNG (chunk pHYs): LightBurn/EzCad e o CorelDRAW importam a imagem já no tamanho físico certo (283 x 162 mm).
+// Grava o DPI no PNG (chunk pHYs): LightBurn/EzCad e o CorelDRAW importam a imagem já no tamanho físico certo (408 x 188 mm).
 const TABLE = (() => {
   const t = new Uint32Array(256);
   for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; }

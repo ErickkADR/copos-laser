@@ -78,3 +78,8 @@ O README é a vitrine (decisões + números antes/depois). Ler o README antes de
 - **Fundo em CSS** (`hero.css`): degradê radial + brilho de chão + `public/img/noise.png` (128 px, opacidade 3,5%) para quebrar as faixas. A imagem de parede que o Erick mandou ficou pixelada
   (2 KB/7 KB em WebP de um JPG de 6000 px) e foi descartada; o `latinhas-3d` usa o mesmo CSS.
 - **Layout do copo invertido**: arte na parte LARGA (`ART_ZONE.y = 14`, comprimida por `ART_SX`), texto na parte ESTREITA (`NAME_ZONE.y = 215`). `text` de cada arte pronta começa com o nome dela; o estúdio tem um campo "Texto gravado".
+
+## 360° (25/11/2026, pedido do Erick)
+- A arte dá a **volta inteira** da parte larga: o mapa todo (`W = layout.w`), altura 154 mm (`ART_ZONE`), esticada na horizontal (408 mm de volta contra os 283 mm do projeto original: ~1,2x com a altura nova). Sem `ART_SX`.
+- Arquivo do laser: **408 × 188 mm a 400 dpi** (arte da volta inteira em cima, texto embaixo). Arte enviada pelo visitante se **repete** lado a lado (sem distorcer) até fechar a volta.
+- Para arte nova: o ideal é proporção ~2,65:1 (408 × 154 mm), com as bordas esquerda e direita se encontrando (emenda nas costas).
