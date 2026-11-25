@@ -80,20 +80,32 @@ export async function readUpload(file) {
   } finally { setTimeout(() => URL.revokeObjectURL(url), 5000); }
 }
 
-export function uploadArt(up, { threshold = 0.5, invert = false } = {}) {
+// Opções de encaixe da arte enviada (o visitante ajusta para pegar os 360° do jeito que quiser):
+//   mode  'repeat'  repete lado a lado até fechar a volta, sem distorcer (n cópias levemente ajustadas para fechar sem emenda)
+//         'stretch' estica a arte na volta inteira (360° exatos, com distorção horizontal)
+//         'single'  uma cópia só, no tamanho natural, no meio da volta
+//   scale  tamanho (altura) da arte em relação à faixa (1 = altura cheia)    offY  posição vertical (fração da faixa)    shift  giro (fração da volta)
+export function uploadArt(up, { threshold = 0.5, invert = false, mode = 'repeat', scale = 1, offY = 0, shift = 0 } = {}) {
   let cache = null;
+  const key = `${threshold}|${invert}|${mode}|${scale}|${offY}|${shift}`;
   return {
     kind: 'upload',
-    layer(w, h) { // máscara já no tamanho da faixa; a arte enviada se repete (lado a lado, sem distorcer) até dar a volta inteira
-      if (cache && cache.w === w && cache.h === h) return cache.c;
+    layer(w, h) { // máscara já no tamanho da faixa: o mesmo desenho serve para a tela e para o arquivo do laser (só muda w x h)
+      if (cache && cache.w === w && cache.h === h && cache.key === key) return cache.c;
       const c = cache?.c ?? canvas(w, h);
       c.width = w; c.height = h;
       const ctx = c.getContext('2d', { willReadFrequently: true });
       ctx.clearRect(0, 0, w, h);
-      const tileH = h, tileW = h * (up.source.width / up.source.height);
-      const n = Math.max(1, Math.round(w / tileW)), dw = w / n; // n cópias, levemente ajustadas para fechar a volta sem emenda
       ctx.imageSmoothingQuality = 'high';
-      for (let i = 0; i < n; i++) ctx.drawImage(up.source, i * dw, 0, dw, tileH);
+      const aspect = up.source.width / up.source.height;
+      const th = h * scale, y = (h - th) / 2 + offY * h;
+      const draw = (x0, tw) => { for (const dx of [-w, 0, w]) ctx.drawImage(up.source, x0 + dx, y, tw, th); }; // 3 vezes: o que passa de uma borda reaparece na outra (volta)
+      if (mode === 'stretch') draw(shift * w, w);
+      else if (mode === 'single') draw((w - th * aspect) / 2 + shift * w, th * aspect);
+      else {
+        const n = Math.max(1, Math.round(w / (th * aspect))), tw = w / n;
+        for (let i = 0; i < n; i++) draw(i * tw + shift * w, tw);
+      }
       const img = ctx.getImageData(0, 0, w, h);
       const d = img.data;
       const lo = Math.max(0, 1 - threshold - 0.03), hi = Math.min(1, 1 - threshold + 0.03);
@@ -106,7 +118,7 @@ export function uploadArt(up, { threshold = 0.5, invert = false } = {}) {
         d[i + 3] = t * 255;
       }
       ctx.putImageData(img, 0, 0);
-      cache = { w, h, c };
+      cache = { w, h, c, key };
       return c;
     },
   };

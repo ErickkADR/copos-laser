@@ -64,3 +64,5 @@
 
 .select { width: 100%; min-height: 48px; padding: 0 14px; border: 2px solid #d5d8dd; border-radius: 14px; background: #fff; font-weight: 700; font-size: 1rem; }
 .select:focus-visible { outline: 3px solid #121316; outline-offset: 2px; }
+
+.strip { width: 100%; height: auto; border-radius: 10px; border: 2px solid #d5d8dd; background: #0f1012; }

@@ -2,7 +2,7 @@
 // Enquanto o tema atual é o personalizado, cada mudança recompõe a gravação e aplica no copo na hora (sem giro).
 // "Girar o copo" roda a coreografia. O arquivo nunca sai do navegador.
 import { ARTS, CUSTOM_BASE } from '../config/arts.js';
-import { DEFAULT_PAINT, EXPORT_ZONE, LASER_PX_PER_MM, LASER_DPI } from '../config/engrave.js';
+import { DEFAULT_PAINT, EXPORT_ZONE, LASER_PX_PER_MM, LASER_DPI, ART_ZONE, WRAP } from '../config/engrave.js';
 import { uploadArt, readUpload, renderLaser } from './engrave.js';
 import { withDpi } from './png-dpi.js';
 
@@ -20,7 +20,7 @@ export function initStudio({ switcher, cup, onSelectCustom }) {
   const dlBtn = form.querySelector('[data-download-laser]');
   const dlHint = form.querySelector('[data-download-hint]');
   const HINT_DEFAULT = 'SVG, PNG, JPG ou WebP. Fica no seu navegador, nada é enviado.';
-  const state = { art: ARTS[0].id, text: ARTS[0].name, textEdited: false, up: null, upArt: null, threshold: 0.5, invert: false };
+  const state = { art: ARTS[0].id, text: ARTS[0].name, textEdited: false, up: null, upArt: null, threshold: 0.5, invert: false, mode: 'repeat', scale: 1, offY: 0, shift: 0 };
   let opener = null;
   let live = 0;
 
@@ -41,7 +41,20 @@ export function initStudio({ switcher, cup, onSelectCustom }) {
     live = requestAnimationFrame(() => cup.paintLive(theme()));
   }
 
-  function rebuildUpload() { if (state.up) state.upArt = uploadArt(state.up, { threshold: state.threshold, invert: state.invert }); }
+  function rebuildUpload() { if (state.up) { state.upArt = uploadArt(state.up, { threshold: state.threshold, invert: state.invert, mode: state.mode, scale: state.scale, offY: state.offY, shift: state.shift }); drawStrip(); } }
+  // faixa planificada: a volta inteira do copo, de uma ponta à outra (prata = gravado)
+  const strip = form.querySelector('[data-strip]');
+  function drawStrip() {
+    if (!strip || !state.upArt) return;
+    const w = strip.width, h = Math.max(40, Math.round((w * ART_ZONE.h) / WRAP.mm));
+    strip.height = h;
+    const x = strip.getContext('2d');
+    x.fillStyle = '#0f1012'; x.fillRect(0, 0, w, h);
+    const tmp = Object.assign(document.createElement('canvas'), { width: w, height: h });
+    const t = tmp.getContext('2d'); t.fillStyle = '#d6dae0'; t.fillRect(0, 0, w, h); t.globalCompositeOperation = 'destination-in'; t.drawImage(state.upArt.layer(w, h), 0, 0);
+    x.drawImage(tmp, 0, 0);
+    x.fillStyle = 'rgba(255,255,255,0.5)'; x.fillRect(0, 0, 2, h); x.fillRect(w - 2, 0, 2, h); // emenda (costas do copo)
+  }
 
   form.addEventListener('input', (e) => {
     const t = e.target;
@@ -52,6 +65,10 @@ export function initStudio({ switcher, cup, onSelectCustom }) {
     }
     if (t.name === 'threshold') { state.threshold = t.value / 100; out.textContent = t.value; rebuildUpload(); }
     if (t.name === 'invert') { state.invert = t.checked; rebuildUpload(); }
+    if (t.name === 'mode') { state.mode = t.value; rebuildUpload(); }
+    if (t.name === 'scale') { state.scale = t.value / 100; form.querySelector('[data-out=scale]').textContent = t.value; rebuildUpload(); }
+    if (t.name === 'offY') { state.offY = t.value / 100; form.querySelector('[data-out=offY]').textContent = t.value; rebuildUpload(); }
+    if (t.name === 'shift') { state.shift = t.value / 360; form.querySelector('[data-out=shift]').textContent = t.value; rebuildUpload(); }
     refresh();
   });
 

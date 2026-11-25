@@ -82,6 +82,13 @@
               <span>Enviar a minha arte</span>
             </label>
             <div class="upload-tools" data-upload-tools hidden>
+              <canvas class="strip" width="600" height="160" aria-label="Pré-visualização da arte planificada, volta inteira (360°)" data-strip></canvas>
+              <p class="field-hint">A faixa mostra a volta inteira do copo, de uma ponta à outra (360°).</p>
+              <label class="field"><span class="field-label">Encaixe na volta</span>
+                <select name="mode" class="select"><option value="repeat">Repetir até fechar a volta</option><option value="stretch">Esticar nos 360°</option><option value="single">Uma vez só, no meio</option></select></label>
+              <label class="range"><span>Tamanho: <output data-out="scale">100</output>%</span><input type="range" name="scale" min="30" max="200" value="100" /></label>
+              <label class="range"><span>Posição vertical: <output data-out="offY">0</output></span><input type="range" name="offY" min="-50" max="50" value="0" /></label>
+              <label class="range"><span>Giro na volta: <output data-out="shift">0</output>°</span><input type="range" name="shift" min="0" max="360" value="0" /></label>
               <label class="range"><span>Limiar: <output data-threshold-out>50</output></span><input type="range" name="threshold" min="5" max="95" value="50" /></label>
               <label class="check"><input type="checkbox" name="invert" /><span>Inverter (gravar o claro)</span></label>
               <button class="btn btn--text" type="button" data-clear-upload>Remover arte</button>
