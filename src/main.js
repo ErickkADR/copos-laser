@@ -15,6 +15,10 @@ ui.onPick((id, btn) => {
   ui.setActive(id);
   send(id === 'custom' ? { type: 'studio', trigger: btn } : { type: 'theme', id });
 });
+{ // o botão marca o modelo que a URL pediu (?model=cup)
+  const want = new URLSearchParams(location.search).get('model') === 'cup' ? 'cup' : 'pint';
+  for (const x of document.querySelectorAll('[data-model]')) x.setAttribute('aria-checked', String(x.dataset.model === want));
+}
 document.querySelector('[data-model-switch]').addEventListener('click', (e) => {
   const b = e.target.closest('[data-model]');
   if (!b) return;
